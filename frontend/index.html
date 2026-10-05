@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LevelUp - Gamified Habit Tracker</title>
+  <link rel="stylesheet" href="./styles/main.css" />
+  <link rel="stylesheet" href="./styles/dashboard.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <!-- Gamified HUD / Stats Bar -->
+      <section class="hud-card" id="player-hud">
+        <div class="avatar-container" id="player-avatar">🧙‍♂️</div>
+        <div class="stats-container">
+          <div class="player-info">
+            <h2 id="player-name">Hero</h2>
+            <span class="player-level" id="player-level">Level 1</span>
+          </div>
+          
+          <div class="stat-bar-group">
+            <div class="stat-label">
+              <span>HP</span>
+              <span id="hp-value">100 / 100</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill fill-hp" id="hp-bar" style="width: 100%"></div>
+            </div>
+          </div>
+
+          <div class="stat-bar-group">
+            <div class="stat-label">
+              <span>XP</span>
+              <span id="xp-value">0 / 100</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill fill-xp" id="xp-bar" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <!-- Daily Reset Countdown Banner -->
+      <section class="timer-banner" id="reset-timer-banner">
+        <div class="timer-info">
+          <span class="timer-icon">⏳</span>
+          <div>
+            <div class="timer-title">Час до дедлайну дейліків (Daily Reset)</div>
+            <div class="timer-desc">Невиконані квести завдадуть шкоди вашому HP о 00:00!</div>
+          </div>
+        </div>
+        <div class="timer-countdown" id="reset-timer-countdown">--:--:--</div>
+      </section>
+
+      <!-- Habit Quests Section -->
+      <section class="habit-section">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h2>Daily Quests (Habits)</h2>
+          <button id="btn-add-habit" style="background-color: var(--color-xp); color: white;">+ New Quest</button>
+        </div>
+
+        <ul class="habit-list" id="habit-list">
+          <!-- Dynamically populated by ui-renderer.js -->
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="./scripts/app.js"></script>
+</body>
+</html>

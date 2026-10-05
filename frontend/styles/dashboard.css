@@ -1,0 +1,194 @@
+/* Gamified HUD Header */
+.hud-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.avatar-container {
+  font-size: 3.5rem;
+  background-color: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stats-container {
+  flex: 1;
+}
+
+.player-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.player-level {
+  color: var(--color-accent);
+  font-weight: bold;
+}
+
+.stat-bar-group {
+  margin-bottom: 0.75rem;
+}
+
+.stat-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+.progress-bar-bg {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.fill-hp {
+  background-color: var(--color-hp);
+}
+
+.fill-xp {
+  background-color: var(--color-xp);
+}
+
+/* Habit Board & Cards */
+.habit-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.habit-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.habit-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.habit-card.completed {
+  border-color: var(--color-success);
+  opacity: 0.7;
+}
+
+.habit-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.habit-badges {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.badge-xp {
+  color: var(--color-xp);
+}
+
+.badge-streak {
+  color: var(--color-accent);
+}
+
+.badge-penalty {
+  color: var(--color-hp);
+  font-weight: 600;
+}
+
+.badge-deadline {
+  color: var(--text-muted);
+}
+
+.btn-complete {
+  background-color: var(--color-success);
+  color: #fff;
+}
+
+/* Daily Reset Timer Banner */
+.timer-banner {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.timer-banner.urgent {
+  border-left-color: var(--color-hp);
+  animation: pulse-glow 2s infinite alternate;
+}
+
+@keyframes pulse-glow {
+  from { box-shadow: 0 0 8px rgba(239, 68, 68, 0.3); }
+  to { box-shadow: 0 0 16px rgba(239, 68, 68, 0.6); }
+}
+
+.timer-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.timer-icon {
+  font-size: 2rem;
+}
+
+.timer-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.timer-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.timer-countdown {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background-color: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.85rem;
+  color: var(--color-accent);
+}
+
+.timer-banner.urgent .timer-countdown {
+  color: var(--color-hp);
+}
