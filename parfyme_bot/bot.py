@@ -59,8 +59,10 @@ class DecantVolumeCallback(CallbackData, prefix="decant"):
 
 
 class BrandSelectCallback(CallbackData, prefix="brand"):
-    """Вибір конкретного бренду."""
+    """Вибір конкретного бренду для цілих флаконів або розпиву."""
     brand_id: str
+    mode: str = "full"
+    volume: int = 0
 
 
 class PerfumeViewCallback(CallbackData, prefix="perf"):
@@ -337,41 +339,31 @@ def get_decant_volumes_keyboard() -> InlineKeyboardMarkup:
     return builder.as_markup()
 
 
-def get_decant_perfumes_keyboard(volume: int) -> InlineKeyboardMarkup:
-    """Список усіх ароматів з бази для обраного об'єму розпиву."""
-    builder = InlineKeyboardBuilder()
-    for p_id, item in PERFUMES_DB.items():
-        price = (item["price_per_ml"] * volume) + ATOMIZER_FEE
-        builder.button(
-            text=f"{item['brand']} — {item['name']} ({price} грн)",
-            callback_data=PerfumeViewCallback(perfume_id=p_id, mode="decant", volume=volume).pack()
-        )
-    builder.button(
-        text="🔙 Назад до об'ємів",
-        callback_data=MainMenuCallback(target="decant_select").pack()
-    )
-    builder.adjust(1)
-    return builder.as_markup()
-
-
-def get_brands_keyboard() -> InlineKeyboardMarkup:
-    """Список із 15 брендів."""
+def get_brands_keyboard(mode: str = "full", volume: int = 0) -> InlineKeyboardMarkup:
+    """Список із 15 брендів для цілих парфумів або розпиву."""
     builder = InlineKeyboardBuilder()
     for brand_id, brand_name in BRANDS_REGISTRY.items():
         builder.button(
             text=brand_name,
-            callback_data=BrandSelectCallback(brand_id=brand_id).pack()
+            callback_data=BrandSelectCallback(brand_id=brand_id, mode=mode, volume=volume).pack()
         )
+
+    # Кнопка 'Назад' повертає до вибору об'єму (для розпиву) або до головного меню (для цілих)
+    if mode == "decant":
+        back_callback = MainMenuCallback(target="decant_select").pack()
+    else:
+        back_callback = MainMenuCallback(target="root").pack()
+
     builder.button(
         text="🔙 Назад",
-        callback_data=MainMenuCallback(target="root").pack()
+        callback_data=back_callback
     )
-    builder.adjust(2)
+    builder.adjust(2)  # По 2 бренди в ряд
     return builder.as_markup()
 
 
-def get_brand_perfumes_keyboard(brand_id: str) -> InlineKeyboardMarkup:
-    """Список парфумів вибраного бренду."""
+def get_brand_perfumes_keyboard(brand_id: str, mode: str = "full", volume: int = 0) -> InlineKeyboardMarkup:
+    """Список парфумів обраного бренду БЕЗ цін на кнопках (акцент на назві аромату)."""
     builder = InlineKeyboardBuilder()
     filtered = [
         (p_id, item) for p_id, item in PERFUMES_DB.items()
@@ -379,32 +371,37 @@ def get_brand_perfumes_keyboard(brand_id: str) -> InlineKeyboardMarkup:
     ]
 
     for p_id, item in filtered:
+        # Показуємо тільки назву аромату без цін!
         builder.button(
-            text=f"{item['name']} ({item['price_full_bottle']} грн)",
-            callback_data=PerfumeViewCallback(perfume_id=p_id, mode="full", volume=0).pack()
+            text=f"✨ {item['name']}",
+            callback_data=PerfumeViewCallback(perfume_id=p_id, mode=mode, volume=volume).pack()
         )
+
+    # Кнопка повернення до брендів
+    if mode == "decant":
+        back_callback = DecantVolumeCallback(volume=volume).pack()
+    else:
+        back_callback = MainMenuCallback(target="brands_select").pack()
 
     builder.button(
         text="🔙 Назад до брендів",
-        callback_data=MainMenuCallback(target="brands_select").pack()
+        callback_data=back_callback
     )
     builder.adjust(1)
     return builder.as_markup()
 
 
 def get_perfume_card_keyboard(perfume_id: str, mode: str, volume: int) -> InlineKeyboardMarkup:
-    """Кнопки картки товару: Замовити та Назад."""
+    """Кнопки картки товару: Замовити та Назад до списку ароматів бренду."""
     builder = InlineKeyboardBuilder()
     builder.button(
         text="🛒 Замовити",
         callback_data=OrderCallback(perfume_id=perfume_id, mode=mode, volume=volume).pack()
     )
 
-    if mode == "decant":
-        back_callback = DecantVolumeCallback(volume=volume).pack()
-    else:
-        brand_id = PERFUMES_DB[perfume_id]["brand_id"]
-        back_callback = BrandSelectCallback(brand_id=brand_id).pack()
+    brand_id = PERFUMES_DB[perfume_id]["brand_id"]
+    # Завжди повертає назад до списку ароматів обраного бренду
+    back_callback = BrandSelectCallback(brand_id=brand_id, mode=mode, volume=volume).pack()
 
     builder.button(
         text="🔙 Назад до списку",
@@ -428,21 +425,33 @@ async def render_text_screen(call: CallbackQuery, text: str, reply_markup: Inlin
 
 
 def format_perfume_caption(item: Dict[str, Any], mode: str, volume: int) -> str:
-    """Форматування картки товару згідно з ТЗ."""
+    """
+    Форматування картки товару:
+    Клієнт спочатку знайомиться з пірамідою та описом звучання,
+    а вартість вказана в самому кінці.
+    """
     if mode == "decant":
         calculated_price = (item["price_per_ml"] * volume) + ATOMIZER_FEE
-        price_line = f"💰 Ціна: <b>{calculated_price}</b> грн. <i>({volume} мл у скляному атомайзері)</i>"
+        price_section = (
+            f"━━━━━━━━━━━━━━━━━━\n"
+            f"💰 <b>Вартість розпиву:</b> <b>{calculated_price} грн</b> "
+            f"<i>(за {volume} мл у скляному атомайзері зі спреєм)</i>"
+        )
     else:
-        price_line = f"💰 Ціна: <b>{item['price_full_bottle']}</b> грн. <i>(новий запечатаний флакон)</i>"
+        price_section = (
+            f"━━━━━━━━━━━━━━━━━━\n"
+            f"💰 <b>Вартість флакона:</b> <b>{item['price_full_bottle']} грн</b> "
+            f"<i>(новий запечатаний флакон у фірмовій коробці)</i>"
+        )
 
     caption = (
         f"🏷 <b>Бренд:</b> {item['brand']}\n"
-        f"📌 <b>Назва:</b> {item['name']}\n\n"
-        f"📖 <b>Опис:</b> {item['description']}\n\n"
+        f"📌 <b>Аромат:</b> {item['name']}\n\n"
+        f"📖 <b>Опис звучання:</b>\n<i>{item['description']}</i>\n\n"
         f"🎼 <b>Верхні ноти:</b> {item['top_notes']}\n"
-        f"💖 <b>Середні ноти:</b> {item['heart_notes']}\n"
-        f"🎵 <b>Кінцеві ноти:</b> {item['base_notes']}\n\n"
-        f"{price_line}"
+        f"💖 <b>Середні (серцеві) ноти:</b> {item['heart_notes']}\n"
+        f"🎵 <b>Кінцеві (базові) ноти:</b> {item['base_notes']}\n\n"
+        f"{price_section}"
     )
     return caption
 
@@ -481,27 +490,43 @@ async def handle_main_navigation(call: CallbackQuery, callback_data: MainMenuCal
         await render_text_screen(call, text, get_decant_volumes_keyboard())
 
     elif callback_data.target == "brands_select":
-        text = "Оберіть бренд парфуму:"
-        await render_text_screen(call, text, get_brands_keyboard())
+        text = "📦 <b>Оберіть бренд парфуму:</b>\n\n<i>Повні оригінальні флакони у фірмовому пакуванні.</i>"
+        await render_text_screen(call, text, get_brands_keyboard(mode="full", volume=0))
 
 
 @dp.callback_query(DecantVolumeCallback.filter())
 async def handle_decant_volume(call: CallbackQuery, callback_data: DecantVolumeCallback) -> None:
-    """Обробка обраного об'єму розпиву -> список парфумів."""
+    """Обробка обраного об'єму розпиву -> відображення сітки брендів."""
     await call.answer()
     vol = callback_data.volume
-    text = f"💧 <b>Список парфумів на розпив ({vol} мл):</b>\nОберіть аромат для перегляду деталей:"
-    await render_text_screen(call, text, get_decant_perfumes_keyboard(vol))
+    text = (
+        f"💧 <b>Розпив ({vol} мл) — Оберіть бренд:</b>\n\n"
+        f"<i>Оберіть компанію, щоб ознайомитися з її ароматами:</i>"
+    )
+    await render_text_screen(call, text, get_brands_keyboard(mode="decant", volume=vol))
 
 
 @dp.callback_query(BrandSelectCallback.filter())
 async def handle_brand_select(call: CallbackQuery, callback_data: BrandSelectCallback) -> None:
-    """Обробка обраного бренду -> список ароматів компанії."""
+    """Обробка обраного бренду -> список ароматів компанії (без цін на кнопках)."""
     await call.answer()
     brand_id = callback_data.brand_id
     brand_name = BRANDS_REGISTRY.get(brand_id, "Бренд")
-    text = f"📦 <b>Оберіть парфум бренду {brand_name}:</b>"
-    await render_text_screen(call, text, get_brand_perfumes_keyboard(brand_id))
+    mode = callback_data.mode
+    volume = callback_data.volume
+
+    if mode == "decant":
+        text = (
+            f"💧 <b>Розпив ({volume} мл) — Аромати бренду {brand_name}:</b>\n\n"
+            f"<i>Оберіть аромат для перегляду його нот та звучання:</i>"
+        )
+    else:
+        text = (
+            f"📦 <b>Аромати бренду {brand_name}:</b>\n\n"
+            f"<i>Оберіть аромат для перегляду його нот та звучання:</i>"
+        )
+
+    await render_text_screen(call, text, get_brand_perfumes_keyboard(brand_id, mode=mode, volume=volume))
 
 
 @dp.callback_query(PerfumeViewCallback.filter())
