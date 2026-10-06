@@ -40,7 +40,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 ENV_TOKEN = os.getenv("BOT_TOKEN", "8731463697:AAF7ueCUbstPxVHmVDIIVceTzhit2Hjn6J8").strip()
 ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
-WEBAPP_URL = os.getenv("WEBAPP_URL", "https://sells-soup-roberts-wholesale.trycloudflare.com").strip()
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://tforsch.github.io/gamified-habit-tracker/").strip()
 
 ATOMIZER_FEE = 40  # Вартість тари для розпиву (грн)
 DEFAULT_PERFUME_IMG = "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?q=80&w=800&auto=format&fit=crop"
