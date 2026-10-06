@@ -717,6 +717,17 @@ PERFUMES_DB: Dict[str, Dict[str, Any]] = {
     },
 }
 
+# Оновлення бази актуальними унікальними фотографіями товарів
+_json_path = os.path.join(os.path.dirname(__file__), "perfumes_data.json")
+if os.path.exists(_json_path):
+    try:
+        with open(_json_path, "r", encoding="utf-8") as _f:
+            _loaded = json.load(_f)
+            if "perfumes" in _loaded and len(_loaded["perfumes"]) == len(PERFUMES_DB):
+                PERFUMES_DB = _loaded["perfumes"]
+    except Exception as e:
+        logger.warning(f"Помилка завантаження perfumes_data.json: {e}")
+
 
 # ==============================================================================
 # 5. ГЕНЕРАЦІЯ КЛАВІАТУР
