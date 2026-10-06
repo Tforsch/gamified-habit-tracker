@@ -4,6 +4,13 @@ import os
 import sys
 from typing import Dict, Any
 
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -20,8 +27,8 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 # 1. КОНФІГУРАЦІЯ ТА НАЛАШТУВАННЯ
 # ==============================================================================
 
-# Токен можна вказати у змінній середовища BOT_TOKEN або ввести в консолі при запуску
-ENV_TOKEN = os.getenv("BOT_TOKEN", "").strip()
+# Токен бота (отриманий від @BotFather)
+ENV_TOKEN = os.getenv("BOT_TOKEN", "8731463697:AAF7ueCUbstPxVHmVDIIVceTzhit2Hjn6J8").strip()
 
 # Вартість скляного атомайзера для розпиву (грн)
 ATOMIZER_FEE = 40
