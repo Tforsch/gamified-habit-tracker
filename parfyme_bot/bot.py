@@ -14,6 +14,7 @@ if sys.platform == "win32":
 from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.exceptions import TelegramBadRequest, TelegramNetworkError
 from aiogram.filters import CommandStart, Command
 from aiogram.filters.callback_data import CallbackData
 from aiogram.fsm.context import FSMContext
@@ -837,12 +838,32 @@ def get_notes_categories_keyboard() -> InlineKeyboardMarkup:
 # ==============================================================================
 
 async def render_text_screen(call: CallbackQuery, text: str, reply_markup: InlineKeyboardMarkup) -> None:
-    """Безпечне перемикання між екранами."""
-    if call.message.photo:
-        await call.message.delete()
-        await call.message.answer(text=text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
-    else:
-        await call.message.edit_text(text=text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
+    """Безпечне перемикання між екранами з обробкою подвійних кліків та помилок Telegram API."""
+    try:
+        if call.message.photo:
+            try:
+                await call.message.delete()
+            except TelegramBadRequest:
+                pass
+            await call.message.answer(text=text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
+        else:
+            try:
+                await call.message.edit_text(text=text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
+            except TelegramBadRequest as e:
+                err_msg = str(e).lower()
+                if "message is not modified" in err_msg:
+                    pass
+                elif "message to edit not found" in err_msg or "message can't be edited" in err_msg:
+                    await call.message.answer(text=text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
+                else:
+                    logger.warning(f"TelegramBadRequest in edit_text: {e}")
+                    await call.message.answer(text=text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
+    except Exception as e:
+        logger.warning(f"Error in render_text_screen: {e}")
+        try:
+            await call.message.answer(text=text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
+        except Exception:
+            pass
 
 
 def format_perfume_caption(item: Dict[str, Any], mode: str, volume: int) -> str:
@@ -964,22 +985,44 @@ async def handle_brand_select(call: CallbackQuery, callback_data: BrandSelectCal
 
 @dp.callback_query(PerfumeViewCallback.filter())
 async def handle_perfume_card(call: CallbackQuery, callback_data: PerfumeViewCallback) -> None:
-    await call.answer()
+    try:
+        await call.answer()
+    except TelegramBadRequest:
+        pass
+
     item = PERFUMES_DB.get(callback_data.perfume_id)
     if not item:
-        await call.answer("❌ Товар не знайдено", show_alert=True)
+        try:
+            await call.answer("❌ Товар не знайдено", show_alert=True)
+        except TelegramBadRequest:
+            pass
         return
 
     caption = format_perfume_caption(item, callback_data.mode, callback_data.volume)
     keyboard = get_perfume_card_keyboard(callback_data.perfume_id, callback_data.mode, callback_data.volume)
 
-    await call.message.delete()
-    await call.message.answer_photo(
-        photo=item.get("image_url", DEFAULT_PERFUME_IMG),
-        caption=caption,
-        reply_markup=keyboard,
-        parse_mode=ParseMode.HTML
-    )
+    try:
+        await call.message.delete()
+    except TelegramBadRequest:
+        pass
+
+    try:
+        await call.message.answer_photo(
+            photo=item.get("image_url", DEFAULT_PERFUME_IMG),
+            caption=caption,
+            reply_markup=keyboard,
+            parse_mode=ParseMode.HTML
+        )
+    except Exception as e:
+        logger.warning(f"Помилка надсилання фото картки: {e}, надсилаємо текстом")
+        try:
+            await call.message.answer(
+                text=caption,
+                reply_markup=keyboard,
+                parse_mode=ParseMode.HTML
+            )
+        except Exception as ex:
+            logger.error(f"Критична помилка показу картки: {ex}")
 
 
 # ==============================================================================
@@ -1167,6 +1210,15 @@ async def aroma_box_select_brand(call: CallbackQuery, callback_data: AromaBoxCal
         f"Оберіть бажану композицію для додавання у ваш сет (обрано {len(selected)}/3):"
     )
     await render_text_screen(call, text, builder.as_markup())
+
+
+@dp.callback_query(F.data == "none")
+async def handle_none_callback(call: CallbackQuery) -> None:
+    """Обробник кліку на кнопки-індикатори (наприклад, аромат уже додано до сету)."""
+    try:
+        await call.answer("ℹ️ Цей аромат уже додано до вашого набору!", show_alert=False)
+    except TelegramBadRequest:
+        pass
 
 
 @dp.callback_query(AromaBoxCallback.filter(F.action == "pick"))
@@ -1489,7 +1541,10 @@ async def cmd_broadcast_send(message: Message, state: FSMContext, bot: Bot) -> N
 
 async def main() -> None:
     bot = Bot(token=ENV_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-    await bot.delete_webhook(drop_pending_updates=True)
+    try:
+        await bot.delete_webhook(drop_pending_updates=True)
+    except Exception as e:
+        logger.warning(f"Не вдалося скинути вебхук: {e}")
 
     bot_info = await bot.get_me()
     print("\n" + "=" * 55)
@@ -1499,7 +1554,13 @@ async def main() -> None:
     print("=" * 55 + "\n")
 
     try:
-        await dp.start_polling(bot)
+        while True:
+            try:
+                await dp.start_polling(bot)
+                break
+            except (TelegramNetworkError, ConnectionError, TimeoutError, OSError) as e:
+                logger.error(f"Збій мережі ({e}). Перепідключення до Telegram через 5 сек...")
+                await asyncio.sleep(5)
     finally:
         await bot.session.close()
 
