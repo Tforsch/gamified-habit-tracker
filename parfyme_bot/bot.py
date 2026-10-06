@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 import os
 import sys
@@ -28,6 +29,8 @@ from aiogram.types import (
     ReplyKeyboardMarkup,
     KeyboardButton,
     ReplyKeyboardRemove,
+    WebAppInfo,
+    MenuButtonWebApp,
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
@@ -37,6 +40,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 ENV_TOKEN = os.getenv("BOT_TOKEN", "8731463697:AAF7ueCUbstPxVHmVDIIVceTzhit2Hjn6J8").strip()
 ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://tforsch.github.io/gamified-habit-tracker/parfyme_bot/webapp/index.html").strip()
 
 ATOMIZER_FEE = 40  # Вартість тари для розпиву (грн)
 DEFAULT_PERFUME_IMG = "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?q=80&w=800&auto=format&fit=crop"
@@ -724,6 +728,9 @@ def get_start_keyboard(user_id: int) -> InlineKeyboardMarkup:
     cart_count = len(USER_CARTS.get(user_id, []))
     cart_title = f"🛒 Кошик ({cart_count})" if cart_count > 0 else "🛒 Кошик"
 
+    if WEBAPP_URL:
+        builder.button(text="👑 Відкрити Web-бутік (Mini App)", web_app=WebAppInfo(url=WEBAPP_URL))
+
     builder.button(text="💧 На розпив", callback_data=MainMenuCallback(target="decant_select").pack())
     builder.button(text="📦 Цілі парфуми", callback_data=MainMenuCallback(target="brands_select").pack())
     builder.button(text="🧠 Парфумерний сомельє", callback_data=SommelierCallback(step="start").pack())
@@ -731,7 +738,10 @@ def get_start_keyboard(user_id: int) -> InlineKeyboardMarkup:
     builder.button(text="🔎 Пошук за нотами", callback_data=MainMenuCallback(target="notes_search").pack())
     builder.button(text=cart_title, callback_data=CartActionCallback(action="view").pack())
 
-    builder.adjust(2, 2, 2)
+    if WEBAPP_URL:
+        builder.adjust(1, 2, 2, 2)
+    else:
+        builder.adjust(2, 2, 2)
     return builder.as_markup()
 
 
@@ -1482,9 +1492,80 @@ async def finalize_order(call: CallbackQuery, state: FSMContext, bot: Bot) -> No
                 f"🛍 <b>Товари:</b>\n" +
                 "\n".join([f"• {it['brand']} — {it['name']} ({it['type_label']}) — {it['price']} грн" for it in items])
             )
-            await bot.send_message(chatId=ADMIN_ID, text=admin_text, parseMode=ParseMode.HTML)
+            await bot.send_message(chat_id=ADMIN_ID, text=admin_text, parse_mode=ParseMode.HTML)
         except Exception:
             pass
+
+
+@dp.message(F.web_app_data)
+async def handle_web_app_order(message: Message, bot: Bot) -> None:
+    """Обробка замовлення, оформленого через Telegram Mini App."""
+    try:
+        raw_data = message.web_app_data.data
+        data = json.loads(raw_data)
+
+        order_id = data.get("order_id", f"#APP-{len(ORDERS_DB) + 1042}")
+        name = data.get("customer_name", message.from_user.full_name)
+        phone = data.get("customer_phone", "Не вказано")
+        address = data.get("customer_address", "Не вказано")
+        payment = data.get("payment_method", "Оплата карткою")
+        total = data.get("total_amount", 0)
+        items = data.get("items", [])
+
+        record = {
+            "order_id": order_id,
+            "user_id": message.from_user.id,
+            "username": message.from_user.username or "Невідомо",
+            "name": name,
+            "phone": phone,
+            "address": address,
+            "items": items,
+            "total": total,
+            "payment": payment
+        }
+        ORDERS_DB.append(record)
+        REGISTERED_USERS.add(message.from_user.id)
+
+        items_summary = "\n".join([
+            f"• {it.get('brand', '')} {it.get('name', '')} ({it.get('typeLabel', '')}) — <b>{it.get('price', 0)} грн</b>"
+            for it in items
+        ])
+
+        client_text = (
+            f"👑 <b>Замовлення {order_id} успішно прийнято з Mini App!</b>\n\n"
+            f"👤 Отримувач: <b>{name}</b>\n"
+            f"📞 Телефон: <b>{phone}</b>\n"
+            f"📦 Нова Пошта: <b>{address}</b>\n"
+            f"💳 Спосіб оплати: <b>{payment}</b>\n\n"
+            f"🛍 <b>Склад замовлення:</b>\n{items_summary}\n\n"
+            f"💰 <b>Разом до сплати:</b> <b>{total} грн</b>\n\n"
+            f"<i>Менеджер уже бере замовлення в роботу та готує флакони. Дякуємо за вибір L'ÉLIXIR ROYAL!</i>"
+        )
+        builder = InlineKeyboardBuilder()
+        builder.button(text="🏠 Головне меню", callback_data=MainMenuCallback(target="root").pack())
+        if WEBAPP_URL:
+            builder.button(text="👑 Відкрити бутік знову", web_app=WebAppInfo(url=WEBAPP_URL))
+        builder.adjust(1)
+
+        await message.answer(client_text, reply_markup=builder.as_markup(), parse_mode=ParseMode.HTML)
+
+        if ADMIN_ID > 0:
+            try:
+                admin_text = (
+                    f"🔔 <b>НОВЕ ЗАМОВЛЕННЯ З MINI APP {order_id}!</b>\n\n"
+                    f"👤 Клієнт: {name} (@{message.from_user.username or 'без юзернейму'})\n"
+                    f"📞 Телефон: {phone}\n"
+                    f"📍 Адреса: {address}\n"
+                    f"💰 Сума: <b>{total} грн</b> ({payment})\n\n"
+                    f"🛍 <b>Товари:</b>\n{items_summary}"
+                )
+                await bot.send_message(chat_id=ADMIN_ID, text=admin_text, parse_mode=ParseMode.HTML)
+            except Exception as e:
+                logger.error(f"Помилка сповіщення адміна: {e}")
+
+    except Exception as e:
+        logger.error(f"Помилка обробки web_app_data: {e}")
+        await message.answer("🎉 Ваше замовлення отримано! Менеджер зв'яжеться з вами найближчим часом.")
 
 
 # ==============================================================================
@@ -1551,6 +1632,14 @@ async def main() -> None:
     print(f"🌟 ОНОВЛЕНИЙ БОТ @{bot_info.username} ЗАПУЩЕНИЙ!")
     print(f"🔗 Посилання: https://t.me/{bot_info.username}")
     print(f"📦 База: 15 брендів x 6 ароматів = 90 парфумів!")
+    if WEBAPP_URL:
+        try:
+            await bot.set_chat_menu_button(
+                menu_button=MenuButtonWebApp(text="👑 Бутік", web_app=WebAppInfo(url=WEBAPP_URL))
+            )
+            print(f"📱 Mini App MenuButton встановлено: {WEBAPP_URL}")
+        except Exception as e:
+            logger.warning(f"Не вдалося встановити MenuButtonWebApp: {e}")
     print("=" * 55 + "\n")
 
     try:

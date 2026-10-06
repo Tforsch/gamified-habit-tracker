@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>L'ÉLIXIR ROYAL — Селективна Парфумерія</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #03140e;
+      --bg-secondary: #072218;
+      --bg-card: #0a2b1f;
+      --bg-card-hover: #0f3729;
+      --gold-primary: #d4af37;
+      --gold-light: #f7df8b;
+      --gold-dark: #9e7a20;
+      --gold-gradient: linear-gradient(135deg, #f7df8b 0%, #d4af37 50%, #9e7a20 100%);
+      --gold-text-grad: linear-gradient(135deg, #fff2c6 0%, #d4af37 60%, #b28828 100%);
+      --emerald-glow: rgba(16, 185, 129, 0.15);
+      --gold-glow: rgba(212, 175, 55, 0.25);
+      --border-gold: rgba(212, 175, 55, 0.28);
+      --border-gold-bright: rgba(212, 175, 55, 0.65);
+      --text-main: #f0fdf4;
+      --text-muted: #94a3b8;
+      --text-gold: #e2c158;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #0d3829 0%, #03140e 70%, #020b08 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 90px;
+    }
+
+    /* Luxury Scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #020c08;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--gold-dark);
+      border-radius: 4px;
+    }
+
+    .font-serif {
+      font-family: 'Cinzel', 'Cormorant Garamond', serif;
+    }
+
+    .gold-gradient-text {
+      background: var(--gold-text-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    /* Top Brand Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(3, 20, 14, 0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-gold);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .crown-icon {
+      width: 34px;
+      height: 34px;
+      background: var(--gold-gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #03140e;
+      font-size: 17px;
+      box-shadow: 0 0 15px var(--gold-glow);
+    }
+
+    .brand-title {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    .brand-subtitle {
+      font-size: 10px;
+      color: var(--text-gold);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .cart-btn-header {
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cart-btn-header:active {
+      transform: scale(0.96);
+      background: rgba(212, 175, 55, 0.25);
+    }
+
+    .cart-badge {
+      background: var(--gold-gradient);
+      color: #03140e;
+      font-weight: 700;
+      font-size: 11px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Tab Switcher */
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      background: rgba(7, 34, 24, 0.5);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    }
+    .tab-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-btn {
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      background: rgba(10, 43, 31, 0.6);
+      border: 1px solid var(--border-gold);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--gold-gradient);
+      color: #03140e;
+      font-weight: 700;
+      border-color: var(--gold-light);
+      box-shadow: 0 4px 15px var(--gold-glow);
+    }
+
+    /* Main Container */
+    .main-content {
+      padding: 16px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Volume Selector Bar (Розпив vs Флакон) */
+    .mode-bar {
+      background: rgba(10, 43, 31, 0.7);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .mode-title {
+      font-size: 11px;
+      color: var(--text-gold);
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .volume-chips {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .volume-chips::-webkit-scrollbar {
+      display: none;
+    }
+
+    .vol-chip {
+      flex: 1;
+      min-width: 60px;
+      text-align: center;
+      padding: 8px 6px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(3, 20, 14, 0.6);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .vol-chip.active {
+      background: var(--gold-gradient);
+      color: #03140e;
+      border-color: var(--gold-light);
+      box-shadow: 0 2px 10px var(--gold-glow);
+    }
+
+    /* Search & Filter */
+    .search-bar {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 16px 12px 42px;
+      border-radius: 14px;
+      background: rgba(10, 43, 31, 0.6);
+      border: 1px solid var(--border-gold);
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--gold-light);
+      box-shadow: 0 0 12px var(--gold-glow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold-primary);
+      font-size: 16px;
+    }
+
+    /* Brand Horizontal List */
+    .filter-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-bottom: 16px;
+      padding-bottom: 4px;
+    }
+    .filter-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      white-space: nowrap;
+      background: rgba(7, 34, 24, 0.8);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-pill.active {
+      background: rgba(212, 175, 55, 0.22);
+      color: var(--gold-light);
+      border-color: var(--gold-primary);
+      font-weight: 600;
+    }
+
+    /* Perfume Grid */
+    .perfumes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .perfumes-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+    }
+
+    .perfume-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .perfume-card:active {
+      transform: scale(0.98);
+    }
+
+    .card-img-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 100%;
+      background: #020c08;
+      overflow: hidden;
+    }
+
+    .card-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .perfume-card:hover .card-img {
+      transform: scale(1.06);
+    }
+
+    .card-badge-vibe {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(3, 20, 14, 0.75);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 3px 8px;
+      font-size: 10px;
+      color: var(--gold-light);
+      backdrop-filter: blur(8px);
+    }
+
+    .card-body {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .card-brand {
+      font-size: 10px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--text-gold);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .card-name {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 6px;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-notes {
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.3;
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px solid rgba(212, 175, 55, 0.15);
+    }
+
+    .card-price {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+
+    .card-add-btn {
+      background: var(--gold-gradient);
+      border: none;
+      color: #03140e;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-weight: 800;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px var(--gold-glow);
+      transition: transform 0.15s;
+    }
+
+    .card-add-btn:active {
+      transform: scale(0.9);
+    }
+
+    /* Aroma Box Builder Section */
+    .aroma-box-container {
+      background: linear-gradient(180deg, #0a2d20 0%, #061a13 100%);
+      border: 1px solid var(--border-gold-bright);
+      border-radius: 20px;
+      padding: 20px 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 20px var(--gold-glow);
+      margin-bottom: 20px;
+    }
+
+    .aroma-box-header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .aroma-box-title {
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .aroma-discount-badge {
+      display: inline-block;
+      background: var(--gold-gradient);
+      color: #03140e;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .aroma-slots-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .aroma-slot {
+      background: rgba(3, 20, 14, 0.7);
+      border: 1.5px dashed var(--border-gold);
+      border-radius: 14px;
+      min-height: 125px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .aroma-slot.filled {
+      border-style: solid;
+      border-color: var(--gold-primary);
+      background: #09271c;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+    }
+
+    .slot-num {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      color: var(--text-gold);
+      margin-bottom: 4px;
+    }
+
+    .slot-icon {
+      font-size: 24px;
+      color: var(--gold-primary);
+      margin-bottom: 4px;
+    }
+
+    .slot-placeholder-text {
+      font-size: 10px;
+      color: var(--text-muted);
+      line-height: 1.2;
+    }
+
+    .slot-filled-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.2;
+      margin-top: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .slot-remove-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(239, 68, 68, 0.85);
+      color: #fff;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: none;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .aroma-summary {
+      background: rgba(3, 20, 14, 0.8);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .aroma-summary-text {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .aroma-final-price {
+      font-family: 'Cinzel', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+
+    .luxury-gold-btn {
+      width: 100%;
+      background: var(--gold-gradient);
+      border: none;
+      color: #03140e;
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 14px;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px var(--gold-glow);
+      transition: all 0.2s;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .luxury-gold-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .luxury-gold-btn:active:not(:disabled) {
+      transform: scale(0.98);
+      filter: brightness(1.1);
+    }
+
+    /* Sommelier Section */
+    .sommelier-card {
+      background: linear-gradient(180deg, #092c1f 0%, #051912 100%);
+      border: 1px solid var(--border-gold-bright);
+      border-radius: 20px;
+      padding: 24px 18px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .quiz-step-title {
+      font-family: 'Cinzel', serif;
+      font-size: 17px;
+      color: var(--gold-light);
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .quiz-step-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .quiz-options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .quiz-option-btn {
+      background: rgba(3, 20, 14, 0.65);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 14px 16px;
+      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    .quiz-option-btn:active {
+      background: rgba(212, 175, 55, 0.2);
+      border-color: var(--gold-light);
+    }
+
+    /* Modal / Drawer */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(2, 11, 8, 0.82);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-sheet {
+      background: #072218;
+      border: 1px solid var(--border-gold-bright);
+      border-bottom: none;
+      border-radius: 24px 24px 0 0;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px 20px 40px;
+      position: relative;
+      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-close-bar {
+      width: 44px;
+      height: 4px;
+      background: var(--gold-primary);
+      border-radius: 4px;
+      margin: 0 auto 16px;
+      opacity: 0.6;
+    }
+
+    .pyramid-box {
+      background: rgba(3, 20, 14, 0.7);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 14px;
+      margin: 16px 0;
+    }
+
+    .pyramid-level {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    .pyramid-level:last-child {
+      margin-bottom: 0;
+    }
+
+    .pyramid-label {
+      color: var(--text-gold);
+      font-weight: 600;
+      min-width: 90px;
+    }
+
+    /* Cart Drawer */
+    .cart-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .cart-item-subtitle {
+      font-size: 11px;
+      color: var(--text-gold);
+    }
+
+    .cart-item-price {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin: 0 12px;
+    }
+
+    .cart-remove-icon {
+      color: #ef4444;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px;
+    }
+
+    /* Form Fields */
+    .form-group {
+      margin-bottom: 12px;
+    }
+    .form-label {
+      font-size: 11px;
+      color: var(--text-gold);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(3, 20, 14, 0.8);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: var(--gold-light);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 43, 31, 0.95);
+      border: 1px solid var(--gold-light);
+      box-shadow: 0 4px 25px var(--gold-glow);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 200;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast -->
+  <div id="toastNotification" class="toast">
+    <span id="toastIcon">✨</span>
+    <span id="toastMessage">Додано у кошик</span>
+  </div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="brand-logo">
+      <div class="crown-icon">👑</div>
+      <div>
+        <div class="brand-title gold-gradient-text">L'ÉLIXIR ROYAL</div>
+        <div class="brand-subtitle">Селективна Парфумерія</div>
+      </div>
+    </div>
+    <div class="cart-btn-header" onclick="openCartView()">
+      <span>🛒</span>
+      <span id="headerCartTotal">0 ₴</span>
+      <div id="headerCartCount" class="cart-badge">0</div>
+    </div>
+  </header>
+
+  <!-- Navigation Tab Bar -->
+  <nav class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('catalog')" id="tabBtnCatalog">
+      <span>✨</span> Каталог (90)
+    </button>
+    <button class="tab-btn" onclick="switchTab('aroma_box')" id="tabBtnAroma">
+      <span>🎁</span> Aroma Box (-15%)
+    </button>
+    <button class="tab-btn" onclick="switchTab('sommelier')" id="tabBtnSommelier">
+      <span>🧠</span> Сомельє
+    </button>
+    <button class="tab-btn" onclick="switchTab('cart')" id="tabBtnCart">
+      <span>🛍</span> Кошик
+    </button>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="main-content">
+
+    <!-- ================= CATALOG VIEW ================= -->
+    <section id="catalogView">
+
+      <!-- Volume Selector Bar -->
+      <div class="mode-bar">
+        <div class="mode-title">
+          <span>Оберіть формат покупки:</span>
+          <span id="currentModeLabel" class="gold-gradient-text">Розпив (5 мл)</span>
+        </div>
+        <div class="volume-chips">
+          <div class="vol-chip" onclick="setCatalogVolume(3)" id="volChip3">💧 3 мл</div>
+          <div class="vol-chip active" onclick="setCatalogVolume(5)" id="volChip5">💧 5 мл</div>
+          <div class="vol-chip" onclick="setCatalogVolume(10)" id="volChip10">💧 10 мл</div>
+          <div class="vol-chip" onclick="setCatalogVolume(15)" id="volChip15">💧 15 мл</div>
+          <div class="vol-chip" onclick="setCatalogVolume(0)" id="volChip0">📦 Флакон</div>
+        </div>
+      </div>
+
+      <!-- Search Input -->
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Пошук аромату, бренду, ноти (напр. Tobacco, ваніль)..."
+          oninput="handleSearch(this.value)"
+        >
+      </div>
+
+      <!-- Brand Carousel Filter -->
+      <div class="filter-scroll" id="brandsFilterScroll">
+        <div class="filter-pill active" onclick="filterByBrand('all')">Всі бренди (15)</div>
+      </div>
+
+      <!-- Vibe / Notes Filter -->
+      <div class="filter-scroll" id="vibesFilterScroll">
+        <div class="filter-pill active" onclick="filterByVibe('all')">Всі настрої</div>
+        <div class="filter-pill" onclick="filterByVibe('f')">🌿 Свіжі & Морські</div>
+        <div class="filter-pill" onclick="filterByVibe('t')">🍂 Тютюнові & Пряні</div>
+        <div class="filter-pill" onclick="filterByVibe('s')">🍨 Солодкі & Ваніль</div>
+        <div class="filter-pill" onclick="filterByVibe('w')">🪵 Деревні & Сандал</div>
+        <div class="filter-pill" onclick="filterByVibe('floral')">🌸 Квіткові & Фрукти</div>
+      </div>
+
+      <!-- Perfumes Counter -->
+      <div style="font-size: 11px; color: var(--text-gold); margin-bottom: 12px; display: flex; justify-content: space-between;">
+        <span id="perfumesCount">Знайдено: 90 парфумів</span>
+        <span>✨ Тільки оригінальний нішевий парфум</span>
+      </div>
+
+      <!-- Perfumes Grid -->
+      <div class="perfumes-grid" id="perfumesGrid">
+      </div>
+    </section>
+
+
+    <!-- ================= AROMA BOX BUILDER VIEW ================= -->
+    <section id="aromaBoxView" style="display: none;">
+      <div class="aroma-box-container">
+        <div class="aroma-box-header">
+          <div class="aroma-discount-badge">Вигода 15% на весь сет</div>
+          <h2 class="aroma-box-title">Конструктор Aroma Box</h2>
+          <p style="font-size: 12px; color: var(--text-muted);">
+            Складіть індивідуальний бокс із <b>3 будь-яких ароматів по 5 мл</b> у скляних атомайзерах
+          </p>
+        </div>
+
+        <div class="aroma-slots-grid">
+          <!-- Slot 1 -->
+          <div class="aroma-slot" id="slot0" onclick="handleSlotClick(0)">
+            <div class="slot-num">№ 1</div>
+            <div class="slot-icon">🧴</div>
+            <div class="slot-placeholder-text">+ Обрати аромат</div>
+          </div>
+          <!-- Slot 2 -->
+          <div class="aroma-slot" id="slot1" onclick="handleSlotClick(1)">
+            <div class="slot-num">№ 2</div>
+            <div class="slot-icon">🧴</div>
+            <div class="slot-placeholder-text">+ Обрати аромат</div>
+          </div>
+          <!-- Slot 3 -->
+          <div class="aroma-slot" id="slot2" onclick="handleSlotClick(2)">
+            <div class="slot-num">№ 3</div>
+            <div class="slot-icon">🧴</div>
+            <div class="slot-placeholder-text">+ Обрати аромат</div>
+          </div>
+        </div>
+
+        <div class="aroma-summary">
+          <div>
+            <div class="aroma-summary-text">Статус: <b id="aromaSlotsStatus" style="color:#fff;">0 з 3 ароматів</b></div>
+            <div class="aroma-summary-text" id="aromaRawSum">Звичайна ціна: 0 ₴</div>
+          </div>
+          <div style="text-align: right;">
+            <div class="aroma-summary-text" style="color: var(--text-gold);">Зі знижкою 15%:</div>
+            <div class="aroma-final-price" id="aromaFinalSum">0 ₴</div>
+          </div>
+        </div>
+
+        <button 
+          class="luxury-gold-btn" 
+          id="btnOrderAromaBox" 
+          disabled 
+          onclick="addAromaBoxToCart()"
+        >
+          🎁 Додати Aroma Box у кошик
+        </button>
+      </div>
+
+      <!-- Quick pick grid for aroma box -->
+      <div style="margin-top: 24px;">
+        <h3 class="font-serif gold-gradient-text" style="font-size: 16px; margin-bottom: 12px;">
+          Швидкий вибір для вашого боксу:
+        </h3>
+        <div class="perfumes-grid" id="aromaQuickPickGrid">
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================= SOMMELIER VIEW ================= -->
+    <section id="sommelierView" style="display: none;">
+      <div class="sommelier-card">
+        <div style="text-align: center; margin-bottom: 12px;">
+          <span style="font-size: 32px;">🧠</span>
+          <h2 class="quiz-step-title" id="quizStepTitle">Парфумерний Сомельє</h2>
+          <p class="quiz-step-subtitle" id="quizStepSubtitle">
+            Дайте відповідь на 3 коротких питання, і ми підберемо ваш ідеальний нішевий аромат
+          </p>
+        </div>
+
+        <!-- Quiz Container -->
+        <div id="quizContainer">
+          <!-- Step 1: Gender -->
+          <div id="quizStep1" class="quiz-step">
+            <div style="font-size: 13px; color: var(--text-gold); margin-bottom: 10px; font-weight: 600;">
+              Крок 1 з 3: Для кого підбираємо композицію?
+            </div>
+            <div class="quiz-options-grid">
+              <button class="quiz-option-btn" onclick="selectQuizOption('gender', 'm')">
+                <span>👨 Джентльмен (Мужній, харизматичний)</span>
+                <span>➔</span>
+              </button>
+              <button class="quiz-option-btn" onclick="selectQuizOption('gender', 'w')">
+                <span>👩 Леді (Чуттєвий, витончений)</span>
+                <span>➔</span>
+              </button>
+              <button class="quiz-option-btn" onclick="selectQuizOption('gender', 'u')">
+                <span>✨ Унісекс (Абсолютна сучасна ніша)</span>
+                <span>➔</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Occasion -->
+          <div id="quizStep2" class="quiz-step" style="display: none;">
+            <div style="font-size: 13px; color: var(--text-gold); margin-bottom: 10px; font-weight: 600;">
+              Крок 2 з 3: Для якого приводу та сезону?
+            </div>
+            <div class="quiz-options-grid">
+              <button class="quiz-option-btn" onclick="selectQuizOption('occasion', 'd')">
+                <span>☀️ Щодень, офіс, бізнес-зустрічі</span>
+                <span>➔</span>
+              </button>
+              <button class="quiz-option-btn" onclick="selectQuizOption('occasion', 'e')">
+                <span>🌙 Вечірній вихід, романтика та побачення</span>
+                <span>➔</span>
+              </button>
+              <button class="quiz-option-btn" onclick="selectQuizOption('occasion', 'c')">
+                <span>❄️ Осінь & Зима (Теплий, затишний шлейф)</span>
+                <span>➔</span>
+              </button>
+              <button class="quiz-option-btn" onclick="selectQuizOption('occasion', 's')">
+                <span>🌊 Весна & Літо (Свіжість, легкість, сонце)</span>
+                <span>➔</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: Vibe -->
+          <div id="quizStep3" class="quiz-step" style="display: none;">
+            <div style="font-size: 13px; color: var(--text-gold); margin-bottom: 10px; font-weight: 600;">
+              Крок 3 з 3: Який напрямок вам найближчий?
+            </div>
+            <div class="quiz-options-grid">
+              <button class="quiz-option-btn" onclick="selectQuizOption('vibe', 'f')">
+                <span>🌿 Морські ноти, свіжі цитруси та мінерали</span>
+                <span>➔</span>
+              </button>
+              <button class="quiz-option-btn" onclick="selectQuizOption('vibe', 's')">
+                <span>🍨 Солодка ваніль, вишня та десертні акорди</span>
+                <span>➔</span>
+              </button>
+              <button class="quiz-option-btn" onclick="selectQuizOption('vibe', 't')">
+                <span>🍂 Дорогий тютюн, коньяк, ром та спеції</span>
+                <span>➔</span>
+              </button>
+              <button class="quiz-option-btn" onclick="selectQuizOption('vibe', 'w')">
+                <span>🪵 Шляхетний сандал, шкіра, кедр та уд</span>
+                <span>➔</span>
+              </button>
+              <button class="quiz-option-btn" onclick="selectQuizOption('vibe', 'floral')">
+                <span>🌸 Стиглі фрукти, жасмин та білі квіти</span>
+                <span>➔</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Result Step -->
+          <div id="quizResultStep" style="display: none;">
+            <div style="text-align: center; margin-bottom: 16px;">
+              <span style="font-size: 40px;">🥂</span>
+              <h3 class="font-serif gold-gradient-text" style="font-size: 18px; margin-top: 6px;">
+                Ваша персональна добірка ароматів:
+              </h3>
+              <p style="font-size: 12px; color: var(--text-muted);">
+                Парфуми, які бездоганно розкриють вашу індивідуальність:
+              </p>
+            </div>
+            <div class="perfumes-grid" id="quizResultsGrid">
+            </div>
+            <button class="luxury-gold-btn" style="margin-top: 16px;" onclick="restartQuiz()">
+              🔄 Пройти тест ще раз
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================= CART VIEW ================= -->
+    <section id="cartView" style="display: none;">
+      <div style="background: var(--bg-card); border: 1px solid var(--border-gold); border-radius: 20px; padding: 20px 16px;">
+        <h2 class="font-serif gold-gradient-text" style="font-size: 20px; margin-bottom: 14px; text-align: center;">
+          Ваш Кошик
+        </h2>
+
+        <div id="cartItemsList">
+        </div>
+
+        <div id="cartEmptyMessage" style="text-align: center; padding: 40px 10px; display: none;">
+          <div style="font-size: 48px; margin-bottom: 12px; opacity: 0.6;">🧴</div>
+          <div style="font-size: 16px; font-weight: 600; color: #fff;">Кошик поки що порожній</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px; margin-bottom: 20px;">
+            Оберіть розпив або повнорозмірний флакон у каталозі
+          </div>
+          <button class="luxury-gold-btn" onclick="switchTab('catalog')">
+            Перейти до каталогу
+          </button>
+        </div>
+
+        <div id="cartCheckoutSection" style="margin-top: 24px;">
+          <!-- Pricing Summary -->
+          <div style="background: rgba(3, 20, 14, 0.7); border: 1px solid var(--border-gold); border-radius: 14px; padding: 14px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">
+              <span>Сума замовлення:</span>
+              <span id="cartSubtotal" style="color: #fff; font-weight: 600;">0 ₴</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">
+              <span>Доставка:</span>
+              <span style="color: var(--text-gold);">За тарифами НП</span>
+            </div>
+            <div style="border-top: 1px solid rgba(212, 175, 55, 0.2); padding-top: 8px; display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 600; font-size: 15px;">Разом до сплати:</span>
+              <span id="cartGrandTotal" class="font-serif" style="font-size: 20px; font-weight: 700; color: var(--gold-light);">0 ₴</span>
+            </div>
+          </div>
+
+          <!-- Nova Poshta Checkout Form -->
+          <h3 class="font-serif gold-gradient-text" style="font-size: 16px; margin-bottom: 12px;">
+            Дані для доставки (Нова Пошта):
+          </h3>
+
+          <div class="form-group">
+            <label class="form-label">Прізвище та Ім'я одержувача *</label>
+            <input type="text" id="orderName" class="form-input" placeholder="Шевченко Олександр">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Номер телефону *</label>
+            <input type="tel" id="orderPhone" class="form-input" placeholder="+380 97 123 45 67">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Місто та номер відділення / поштомату *</label>
+            <input type="text" id="orderAddress" class="form-input" placeholder="м. Київ, Відділення №25 або Поштомат 8412">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Спосіб оплати *</label>
+            <select id="orderPayment" class="form-input" style="background: #03140e; cursor: pointer;">
+              <option value="card">💳 Оплата на картку / Monobank</option>
+              <option value="cod">💵 Накладений платіж (при отриманні)</option>
+            </select>
+          </div>
+
+          <button class="luxury-gold-btn" style="margin-top: 14px;" onclick="submitOrder()">
+            🚚 Підтвердити Замовлення
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ================= PERFUME DETAIL MODAL ================= -->
+  <div class="modal-backdrop" id="perfumeModalBackdrop" onclick="closePerfumeModal(event)">
+    <div class="modal-sheet" id="perfumeModalSheet" onclick="event.stopPropagation()">
+      <div class="modal-close-bar"></div>
+
+      <div style="position: relative; width: 100%; height: 260px; border-radius: 16px; overflow: hidden; margin-bottom: 14px; background: #020c08;">
+        <img id="modalPerfumeImg" src="" alt="Perfume" style="width: 100%; height: 100%; object-fit: cover;">
+        <div id="modalGenderBadge" class="card-badge-vibe">Унісекс</div>
+      </div>
+
+      <div id="modalBrand" class="card-brand" style="font-size: 12px;">TOM FORD</div>
+      <h2 id="modalName" class="font-serif" style="font-size: 22px; color: #fff; margin-bottom: 8px;">Tobacco Vanille</h2>
+
+      <p id="modalDesc" style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
+        Опис аромату...
+      </p>
+
+      <!-- Olfactory Pyramid -->
+      <div class="pyramid-box">
+        <div style="font-size: 11px; text-transform: uppercase; color: var(--gold-light); letter-spacing: 1px; margin-bottom: 10px; font-weight: 700;">
+          🎼 Ольфакторна піраміда:
+        </div>
+        <div class="pyramid-level">
+          <span class="pyramid-label">Верхні ноти:</span>
+          <span id="modalTopNotes" style="color: #fff;"></span>
+        </div>
+        <div class="pyramid-level">
+          <span class="pyramid-label">Ноти серця:</span>
+          <span id="modalHeartNotes" style="color: #fff;"></span>
+        </div>
+        <div class="pyramid-level">
+          <span class="pyramid-label">Базові ноти:</span>
+          <span id="modalBaseNotes" style="color: #fff;"></span>
+        </div>
+      </div>
+
+      <!-- Volume Selector inside Modal -->
+      <div style="margin-bottom: 18px;">
+        <label class="form-label">Оберіть об'єм для замовлення:</label>
+        <div class="volume-chips">
+          <div class="vol-chip" onclick="setModalVolume(3)" id="mVol3">3 мл</div>
+          <div class="vol-chip active" onclick="setModalVolume(5)" id="mVol5">5 мл</div>
+          <div class="vol-chip" onclick="setModalVolume(10)" id="mVol10">10 мл</div>
+          <div class="vol-chip" onclick="setModalVolume(15)" id="mVol15">15 мл</div>
+          <div class="vol-chip" onclick="setModalVolume(0)" id="mVol0">100 мл флакон</div>
+        </div>
+      </div>
+
+      <!-- Add to Cart CTA -->
+      <button class="luxury-gold-btn" id="modalAddToCartBtn" onclick="addModalPerfumeToCart()">
+        Додати в кошик • <span id="modalPriceTag">715 ₴</span>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ================= ORDER SUCCESS MODAL ================= -->
+  <div class="modal-backdrop" id="successModalBackdrop">
+    <div class="modal-sheet" style="text-align: center; padding: 36px 20px;">
+      <div style="font-size: 54px; margin-bottom: 14px;">👑</div>
+      <h2 class="font-serif gold-gradient-text" style="font-size: 22px; margin-bottom: 8px;">
+        Замовлення Прийнято!
+      </h2>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;" id="successModalText">
+        Ваше замовлення успішно зареєстровано. Наш менеджер незабаром зв'яжеться з вами та надішле ТТН Нової Пошти.
+      </p>
+      <div style="background: rgba(3, 20, 14, 0.8); border: 1px solid var(--border-gold); border-radius: 14px; padding: 14px; margin-bottom: 20px;" id="successReceiptDetails">
+      </div>
+      <button class="luxury-gold-btn" onclick="closeSuccessModal()">
+        Продовжити покупки
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ================= JAVASCRIPT APP LOGIC ================= -->
+  <script>
+    // Database injected directly from backend
+    const BRANDS_DB = {"tom_ford": "Tom Ford", "mfk": "Maison Francis Kurkdjian", "creed": "Creed", "kilian": "Kilian", "jo_malone": "Jo Malone", "byredo": "Byredo", "le_labo": "Le Labo", "ysl": "Yves Saint Laurent", "dior": "Dior", "chanel": "Chanel", "tiziana_terenzi": "Tiziana Terenzi", "montale": "Montale", "mancera": "Mancera", "ex_nihilo": "Ex Nihilo", "zarkoperfume": "Zarkoperfume"};
+    const PERFUMES_DB = {"tf_tobacco_vanille": {"brand_id": "tom_ford", "brand": "Tom Ford", "name": "Tobacco Vanille", "description": "Теплий, величний східний шедевр джентльменського клубу: елітний тютюн, прянощі, боби тонка та солодка ваніль.", "top_notes": "Листя тютюну, Східні прянощі", "heart_notes": "Боби тонка, Квіти тютюну, Ваніль, Какао", "base_notes": "Сухофрукти, Деревний акорд", "price_full_bottle": 11500, "price_per_ml": 135, "gender": "u", "occasion": "e", "vibe": "t"}, "tf_lost_cherry": {"brand_id": "tom_ford", "brand": "Tom Ford", "name": "Lost Cherry", "description": "Спокусливий, насичений вишневий лікер з гірким мигдалем, турецькою трояндою та п'янким перуанським бальзамом.", "top_notes": "Чорна вишня, Лікер, Гіркий мигдаль", "heart_notes": "Вишня гріот, Турецька троянда, Жасмин самбак", "base_notes": "Перуанський бальзам, Боби тонка, Сандал, Ветивер", "price_full_bottle": 12800, "price_per_ml": 155, "gender": "w", "occasion": "e", "vibe": "s"}, "tf_bitter_peach": {"brand_id": "tom_ford", "brand": "Tom Ford", "name": "Bitter Peach", "description": "Соковитий, дозрілий на сонці персик, змочений у дорогому ромі та коньяку, із пряним шлейфом пачулі.", "top_notes": "Персик, Червоний апельсин, Кардамон", "heart_notes": "Ром, Коньяк, Давана, Жасмин", "base_notes": "Пачулі, Сандал, Ваніль, Боби тонка, Лабданум", "price_full_bottle": 12500, "price_per_ml": 150, "gender": "u", "occasion": "e", "vibe": "s"}, "tf_oud_wood": {"brand_id": "tom_ford", "brand": "Tom Ford", "name": "Oud Wood", "description": "Один із найвишуканіших деревних ароматів: димний уд, палісандр, кардамон і вершковий сандал.", "top_notes": "Палісандр, Кардамон, Сичуанський перець", "heart_notes": "Удове дерево, Сандал, Ветивер", "base_notes": "Боби тонка, Ваніль, Бурштин", "price_full_bottle": 11900, "price_per_ml": 140, "gender": "m", "occasion": "d", "vibe": "w"}, "tf_black_orchid": {"brand_id": "tom_ford", "brand": "Tom Ford", "name": "Black Orchid", "description": "Містичний, сексуальний аромат чорної трюфельної орхідеї, чорного шоколаду, пачулі та ладану.", "top_notes": "Чорний трюфель, Іланг-іланг, Бергамот, Чорна смородина", "heart_notes": "Чорна орхідея, Спеції, Лотос", "base_notes": "Пачулі, Ладан, Ваніль, Темний шоколад", "price_full_bottle": 7900, "price_per_ml": 95, "gender": "w", "occasion": "e", "vibe": "floral"}, "tf_fucking_fabulous": {"brand_id": "tom_ford", "brand": "Tom Ford", "name": "Fucking Fabulous", "description": "Відвертий східно-шкіряний аромат гіркого мигдалю, дорогої шкіри, лаванди та пудрового ірису.", "top_notes": "Лаванда, Мускатна шавлія", "heart_notes": "Гіркий мигдаль, Шкіра, Корінь ірису", "base_notes": "Шкіра, Боби тонка, Кашмеран, Біла амбра", "price_full_bottle": 13500, "price_per_ml": 160, "gender": "u", "occasion": "e", "vibe": "w"}, "mfk_baccarat_540": {"brand_id": "mfk", "brand": "Maison Francis Kurkdjian", "name": "Baccarat Rouge 540", "description": "Кришталеве звучання шафрану, солодкої ялинової смоли та мінеральної сірої амбри.", "top_notes": "Шафран, Жасмин", "heart_notes": "Сіра амбра, Деревний бурштин", "base_notes": "Ялинова смола, Білий кедр", "price_full_bottle": 13200, "price_per_ml": 160, "gender": "u", "occasion": "e", "vibe": "s"}, "mfk_baccarat_extrait": {"brand_id": "mfk", "brand": "Maison Francis Kurkdjian", "name": "Baccarat Rouge 540 Extrait", "description": "Концентрована, глибша версія культового аромату з нотами гіркого марокканського мигдалю та мускусу.", "top_notes": "Гіркий мигдаль, Шафран", "heart_notes": "Єгипетський жасмин, Кедр", "base_notes": "Сіра амбра, Деревні ноти, Мускус", "price_full_bottle": 15800, "price_per_ml": 190, "gender": "u", "occasion": "e", "vibe": "s"}, "mfk_grand_soir": {"brand_id": "mfk", "brand": "Maison Francis Kurkdjian", "name": "Grand Soir", "description": "Розкіш паризького вечора: теплий золотистий бурштин, сіамський бензоїн, боби тонка та м'яка ваніль.", "top_notes": "Лабданум, Кориандр", "heart_notes": "Сіамський бензоїн, Боби тонка", "base_notes": "Амбра, Ваніль", "price_full_bottle": 10900, "price_per_ml": 130, "gender": "u", "occasion": "e", "vibe": "s"}, "mfk_gentle_fluidity_gold": {"brand_id": "mfk", "brand": "Maison Francis Kurkdjian", "name": "Gentle Fluidity Gold", "description": "Ніжний, огортаючий шлейф повітряної ванілі, ягід ялівцю, мускатного горіха та мускусу.", "top_notes": "Ягоди ялівцю, Мускатний горіх", "heart_notes": "Коріандр", "base_notes": "Ваніль, Мускус, Амбра, Деревні акорди", "price_full_bottle": 9900, "price_per_ml": 120, "gender": "w", "occasion": "d", "vibe": "s"}, "mfk_gentle_fluidity_silver": {"brand_id": "mfk", "brand": "Maison Francis Kurkdjian", "name": "Gentle Fluidity Silver", "description": "Свіжий, металевий, джин-тоніковий вибух ялівцю, мускату та прохолодного лісового дерева.", "top_notes": "Ялівцеві ягоди, Мускатний горіх", "heart_notes": "Коріандр", "base_notes": "Деревні ноти, Мускус, Ваніль", "price_full_bottle": 9900, "price_per_ml": 120, "gender": "m", "occasion": "d", "vibe": "f"}, "mfk_724": {"brand_id": "mfk", "brand": "Maison Francis Kurkdjian", "name": "724", "description": "Аромат чистоти мегаполісу 24/7: білі альдегіди, бергамот, жасмин та білий мускус свіжовипраної білизни.", "top_notes": "Альдегіди, Калабрійський бергамот", "heart_notes": "Жасмин, Солодкий горошок, Чубушник", "base_notes": "Білий мускус, Сандал", "price_full_bottle": 9800, "price_per_ml": 120, "gender": "u", "occasion": "d", "vibe": "f"}, "creed_aventus": {"brand_id": "creed", "brand": "Creed", "name": "Aventus", "description": "Еталон чоловічої харизми: соковитий ананас, яблуко, березовий дим, пачулі та сіра амбра.", "top_notes": "Ананас, Бергамот, Чорна смородина, Яблуко", "heart_notes": "Береза, Пачулі, Жасмин, Троянда", "base_notes": "Мускус, Дубовий мох, Сіра амбра, Ваніль", "price_full_bottle": 14500, "price_per_ml": 170, "gender": "m", "occasion": "d", "vibe": "w"}, "creed_silver_mountain": {"brand_id": "creed", "brand": "Creed", "name": "Silver Mountain Water", "description": "Кришталева свіжість гірського струмка в Альпах: зелений чай, чорна смородина, бергамот і озоновий мускус.", "top_notes": "Бергамот, Мандарин", "heart_notes": "Зелений чай, Чорна смородина", "base_notes": "Мускус, Петитгрейн, Сандал, Гальбанум", "price_full_bottle": 12500, "price_per_ml": 150, "gender": "u", "occasion": "s", "vibe": "f"}, "creed_green_irish_tweed": {"brand_id": "creed", "brand": "Creed", "name": "Green Irish Tweed", "description": "Класика аристократичної Англії: прохолодна скошена трава, вербена, листя фіалки та ірис.", "top_notes": "Лимонна вербена, Ірис", "heart_notes": "Листя фіалки", "base_notes": "Сіра амбра, Сандал", "price_full_bottle": 11900, "price_per_ml": 140, "gender": "m", "occasion": "d", "vibe": "f"}, "creed_millesime_imperial": {"brand_id": "creed", "brand": "Creed", "name": "Millésime Impérial", "description": "Сонячний морський бриз Сицилії: морська сіль, свіжі фрукти, цитруси та шляхетний мускус.", "top_notes": "Морська сіль, Фруктові ноти", "heart_notes": "Сицилійський лимон, Бергамот, Ірис, Мандарин", "base_notes": "Морські ноти, Мускус, Деревні ноти", "price_full_bottle": 12200, "price_per_ml": 145, "gender": "u", "occasion": "s", "vibe": "f"}, "creed_aventus_for_her": {"brand_id": "creed", "brand": "Creed", "name": "Aventus for Her", "description": "Жіноча версія бестселера: зелене яблуко, рожевий перець, калабрійський бергамот, троянда та персик.", "top_notes": "Зелене яблуко, Бергамот, Пачулі, Лимон, Рожевий перець", "heart_notes": "Мускус, Троянда, Сандал, Стиракс", "base_notes": "Чорна смородина, Персик, Бурштин, Іланг-іланг", "price_full_bottle": 13900, "price_per_ml": 165, "gender": "w", "occasion": "d", "vibe": "floral"}, "creed_viking": {"brand_id": "creed", "brand": "Creed", "name": "Viking", "description": "Вогняний дух скандинавських морів: калабрійський бергамот, рожевий перець, перцева м'ята та лаванда.", "top_notes": "Рожевий перець, Калабрійський бергамот, Сицилійський лимон", "heart_notes": "Перцева м'ята, Болгарська троянда", "base_notes": "Сандал, Ветивер, Пачулі, Лаванда", "price_full_bottle": 11500, "price_per_ml": 140, "gender": "m", "occasion": "e", "vibe": "t"}, "kilian_angels_share": {"brand_id": "kilian", "brand": "Kilian", "name": "Angels' Share", "description": "П'янкий акорд дорогого коньяку з дубової бочки, пряна кориця, вершкове праліне та ваніль.", "top_notes": "Коньяк", "heart_notes": "Кориця, Боби тонка, Дуб", "base_notes": "Праліне, Ваніль, Сандал", "price_full_bottle": 9800, "price_per_ml": 140, "gender": "u", "occasion": "e", "vibe": "s"}, "kilian_love_dont_be_shy": {"brand_id": "kilian", "brand": "Kilian", "name": "Love, Don't Be Shy", "description": "Улюблений парфум Ріанни: ніжний зефір маршмелоу, апельсиновий цвіт, жимолость та солодкий цукор.", "top_notes": "Неролі, Бергамот, Рожевий перець, Коріандр", "heart_notes": "Апельсиновий цвіт, Жасмин, Жимолость, Троянда, Ірис", "base_notes": "Цукор, Ваніль, Карамель, Мускус", "price_full_bottle": 10500, "price_per_ml": 150, "gender": "w", "occasion": "e", "vibe": "s"}, "kilian_good_girl_gone_bad": {"brand_id": "kilian", "brand": "Kilian", "name": "Good Girl Gone Bad", "description": "Квітковий вихор невинності та гріха: медовий османтус, травнева троянда, тубероза та нарцис.", "top_notes": "Османтус, Жасмин, Травнева троянда", "heart_notes": "Індійська тубероза, Нарцис", "base_notes": "Амбра, Білий кедр", "price_full_bottle": 10500, "price_per_ml": 150, "gender": "w", "occasion": "d", "vibe": "floral"}, "kilian_black_phantom": {"brand_id": "kilian", "brand": "Kilian", "name": "Black Phantom", "description": "Піратський скарб: чорна міцна кава, карибський ром, цукрова тростина, гіркий мигдаль і темний шоколад.", "top_notes": "Ром, Цукрова тростина", "heart_notes": "Темний шоколад, Кава, Карамель, Мигдаль", "base_notes": "Геліотроп, Сандал", "price_full_bottle": 10800, "price_per_ml": 150, "gender": "u", "occasion": "e", "vibe": "s"}, "kilian_vodka_on_the_rocks": {"brand_id": "kilian", "brand": "Kilian", "name": "Vodka on the Rocks", "description": "Льодяний крижаний коктейль: морозний кардамон, коріандр, ревінь, конвалія та дубовий мох.", "top_notes": "Коріандр, Кардамон, Альдегіди", "heart_notes": "Ревінь, Конвалія, Троянда", "base_notes": "Дубовий мох, Амброксан, Сандал", "price_full_bottle": 9900, "price_per_ml": 140, "gender": "m", "occasion": "d", "vibe": "f"}, "kilian_apple_brandy": {"brand_id": "kilian", "brand": "Kilian", "name": "Apple Brandy on the Rocks", "description": "Нічний Нью-Йорк: хрустке яблуко, витриманий бренді, кедр, мох та ванільні акорди.", "top_notes": "Кардамон, Бергамот", "heart_notes": "Яблуко, Бренді, Ром, Ананас, Ваніль", "base_notes": "Амброксан, Кедр", "price_full_bottle": 9500, "price_per_ml": 135, "gender": "u", "occasion": "e", "vibe": "s"}, "jm_wood_sage": {"brand_id": "jo_malone", "brand": "Jo Malone", "name": "Wood Sage & Sea Salt", "description": "Свіжий вітер скелястого узбережжя Британії: морська мінеральна сіль, насіння амбрети та шавлія.", "top_notes": "Насіння амбрети", "heart_notes": "Морська сіль", "base_notes": "Шавлія", "price_full_bottle": 5400, "price_per_ml": 75, "gender": "u", "occasion": "d", "vibe": "f"}, "jm_english_pear": {"brand_id": "jo_malone", "brand": "Jo Malone", "name": "English Pear & Freesia", "description": "Осінній англійський сад: соковита медова груша Вільямс, біла білосніжна фрезія та пачулі.", "top_notes": "Груша, Диня", "heart_notes": "Фрезія, Троянда", "base_notes": "Мускус, Пачулі, Ревінь, Амбра", "price_full_bottle": 5400, "price_per_ml": 75, "gender": "w", "occasion": "d", "vibe": "floral"}, "jm_peony_blush": {"brand_id": "jo_malone", "brand": "Jo Malone", "name": "Peony & Blush Suede", "description": "Розкішні квітучі півонії, хрустке соковите червоне яблуко, жасмин та ніжна рожева замша.", "top_notes": "Червоне яблуко", "heart_notes": "Півонія, Жасмин, Гвоздика, Троянда", "base_notes": "Замша", "price_full_bottle": 5400, "price_per_ml": 75, "gender": "w", "occasion": "d", "vibe": "floral"}, "jm_blackberry_bay": {"brand_id": "jo_malone", "brand": "Jo Malone", "name": "Blackberry & Bay", "description": "Спогади дитинства про збирання ожини: терпкий сік темних ягід, свіже листя лавра та білий кедр.", "top_notes": "Ожина", "heart_notes": "Листя лавра", "base_notes": "Кедр, Ветивер", "price_full_bottle": 5400, "price_per_ml": 75, "gender": "u", "occasion": "d", "vibe": "f"}, "jm_myrrh_tonka": {"brand_id": "jo_malone", "brand": "Jo Malone", "name": "Myrrh & Tonka", "description": "Східна глибина колекції Intense: лавандовий старт, дорогоцінна смола мірри та мигдальні боби тонка.", "top_notes": "Лаванда", "heart_notes": "Омманська мірра", "base_notes": "Боби тонка, Ваніль, Мигдаль", "price_full_bottle": 6800, "price_per_ml": 95, "gender": "u", "occasion": "e", "vibe": "s"}, "jm_lime_basil": {"brand_id": "jo_malone", "brand": "Jo Malone", "name": "Lime Basil & Mandarin", "description": "Фірмова класика бренду: карибський лайм, соковитий мандарин, перцевий базилік та білий чебрець.", "top_notes": "Лайм, Мандарин, Бергамот", "heart_notes": "Базилік, Бузок, Ірис, Чебрець", "base_notes": "Пачулі, Ветивер", "price_full_bottle": 5400, "price_per_ml": 75, "gender": "u", "occasion": "s", "vibe": "f"}, "byredo_bal_dafrique": {"brand_id": "byredo", "brand": "Byredo", "name": "Bal d'Afrique", "description": "Сонячний Париж 20-х років: солодкий ветивер, чорнобривці, бергамот, фіалка та мускус.", "top_notes": "Бергамот, Лимон, Неролі, Чорнобривці", "heart_notes": "Фіалка, Жасмин, Цикламен", "base_notes": "Чорна амбра, Мускус, Ветивер, Марокканський кедр", "price_full_bottle": 8900, "price_per_ml": 115, "gender": "u", "occasion": "d", "vibe": "floral"}, "byredo_gypsy_water": {"brand_id": "byredo", "brand": "Byredo", "name": "Gypsy Water", "description": "Магія циганської свободи біля вогнища: соснові голки, ялівець, цитруси, ладан і тепла ваніль.", "top_notes": "Бергамот, Лимон, Перець, Ялівець", "heart_notes": "Ладан, Соснові голки, Корінь ірису", "base_notes": "Амбра, Ваніль, Сандал", "price_full_bottle": 8900, "price_per_ml": 115, "gender": "u", "occasion": "d", "vibe": "w"}, "byredo_blanche": {"brand_id": "byredo", "brand": "Byredo", "name": "Blanche", "description": "Апогей білого кольору та чистоти: біла троянда, альдегіди, півонія, неролі та шовковистий сандал.", "top_notes": "Альдегіди, Біла троянда, Рожевий перець", "heart_notes": "Півонія, Фіалка, Апельсиновий цвіт", "base_notes": "Мускус, Сандал", "price_full_bottle": 8900, "price_per_ml": 115, "gender": "w", "occasion": "d", "vibe": "f"}, "byredo_mojave_ghost": {"brand_id": "byredo", "brand": "Byredo", "name": "Mojave Ghost", "description": "Квітка-привид пустелі Мохаве: ямайська саподіла, мускусна амбрета, магнолія, фіалка та кедр.", "top_notes": "Саподіла, Амбрета", "heart_notes": "Магнолія, Фіалка, Сандал", "base_notes": "Сіра амбра, Кедр", "price_full_bottle": 8900, "price_per_ml": 115, "gender": "u", "occasion": "d", "vibe": "floral"}, "byredo_rose_of_no_mans": {"brand_id": "byredo", "brand": "Byredo", "name": "Rose of No Man's Land", "description": "Шляхетна, прохолодна турецька троянда, прикрашена рожевим перцем, малиновим цвітом та білою амброю.", "top_notes": "Рожевий перець, Пелюстки турецької троянди", "heart_notes": "Цвіт малини, Абсолют турецької троянди", "base_notes": "Папірус, Біла амбра", "price_full_bottle": 8900, "price_per_ml": 115, "gender": "w", "occasion": "d", "vibe": "floral"}, "byredo_young_rose": {"brand_id": "byredo", "brand": "Byredo", "name": "Young Rose", "description": "Сучасна, бунтівна ода молодості: сичуанський гострий перець, амбрета, дамаська троянда та ірис.", "top_notes": "Сичуанський перець, Амбрета", "heart_notes": "Дамаська троянда, Корінь ірису", "base_notes": "Мускус, Амброксан", "price_full_bottle": 8900, "price_per_ml": 115, "gender": "w", "occasion": "d", "vibe": "floral"}, "lelabo_santal_33": {"brand_id": "le_labo", "brand": "Le Labo", "name": "Santal 33", "description": "Легенда нішевого Нью-Йорка: австралійський сандал, димна шкіра, листя папірусу, кедр та фіалка.", "top_notes": "Фіалка, Кардамон", "heart_notes": "Ірис, Папірус, Амброксан", "base_notes": "Кедр, Шкіра, Сандал", "price_full_bottle": 11200, "price_per_ml": 145, "gender": "u", "occasion": "d", "vibe": "w"}, "lelabo_the_noir_29": {"brand_id": "le_labo", "brand": "Le Labo", "name": "The Noir 29", "description": "Поетична ода чорному благородному чаю: соковитий інжир, лавровий лист, чорний чай, тютюн і кедр.", "top_notes": "Бергамот, Інжир, Лавр", "heart_notes": "Кедр, Ветивер, Мускус", "base_notes": "Сіно, Тютюн, Чорний чай", "price_full_bottle": 11200, "price_per_ml": 145, "gender": "u", "occasion": "e", "vibe": "t"}, "lelabo_another_13": {"brand_id": "le_labo", "brand": "Le Labo", "name": "Another 13", "description": "Гіпнотична синтетична молекула амброксану, соковита хрустка груша, яблуко, жасмин та мох.", "top_notes": "Груша, Яблуко, Цитруси", "heart_notes": "Амброксан, Саліцилати, Жасмин", "base_notes": "Ізо Е Супер, Мускус, Мох", "price_full_bottle": 11200, "price_per_ml": 145, "gender": "u", "occasion": "d", "vibe": "f"}, "lelabo_rose_31": {"brand_id": "le_labo", "brand": "Le Labo", "name": "Rose 31", "description": "Нетипова троянда для чоловіків та сміливих жінок: троянда центіфолія, зігріваючий кмин, ветивер і уд.", "top_notes": "Троянда, Кмин", "heart_notes": "Троянда, Ветивер, Кедр", "base_notes": "Мускус, Гуаяк, Уд, Лабданум", "price_full_bottle": 11200, "price_per_ml": 145, "gender": "u", "occasion": "e", "vibe": "floral"}, "lelabo_bergamote_22": {"brand_id": "le_labo", "brand": "Le Labo", "name": "Bergamote 22", "description": "Іскристий бергамотовий спалах з петитгрейном, грейпфрутом, бурштином, мускусом і ветивером.", "top_notes": "Бергамот, Грейпфрут", "heart_notes": "Петитгрейн, Апельсиновий цвіт", "base_notes": "Ветивер, Кедр, Мускус, Амбра", "price_full_bottle": 11200, "price_per_ml": 145, "gender": "u", "occasion": "s", "vibe": "f"}, "lelabo_baie_19": {"brand_id": "le_labo", "brand": "Le Labo", "name": "Baie 19", "description": "Запах землі після літнього дощу (петрикор): вологе листя, ялівець, пачулі та зелені ягоди.", "top_notes": "Сухе листя, Ягоди ялівцю", "heart_notes": "Пачулі, Зелені ноти", "base_notes": "Амброксан, Мускус", "price_full_bottle": 11200, "price_per_ml": 145, "gender": "u", "occasion": "d", "vibe": "f"}, "ysl_black_opium": {"brand_id": "ysl", "brand": "Yves Saint Laurent", "name": "Black Opium", "description": "Адреналіновий коктейль із чорної міцної кави, білих квітів жасмину, груші та спокусливої ванілі.", "top_notes": "Груша, Рожевий перець, Апельсиновий цвіт", "heart_notes": "Кава, Жасмин, Гіркий мигдаль", "base_notes": "Ваніль, Пачулі, Кедр, Кашемірове дерево", "price_full_bottle": 5800, "price_per_ml": 80, "gender": "w", "occasion": "e", "vibe": "s"}, "ysl_libre": {"brand_id": "ysl", "brand": "Yves Saint Laurent", "name": "Libre", "description": "Квінтесенція жіночої свободи: французька лаванда, марокканський апельсиновий цвіт і мадагаскарська ваніль.", "top_notes": "Лаванда, Мандарин, Чорна смородина, Петитгрейн", "heart_notes": "Лаванда, Апельсиновий цвіт, Жасмин", "base_notes": "Мадагаскарська ваніль, Мускус, Кедр, Сіра амбра", "price_full_bottle": 5900, "price_per_ml": 80, "gender": "w", "occasion": "d", "vibe": "floral"}, "ysl_y_edp": {"brand_id": "ysl", "brand": "Yves Saint Laurent", "name": "Y Eau de Parfum", "description": "Сучасний чоловічий фужер: соковите яблуко, пряний свіжий імбир, шавлія, ягоди ялівцю та боби тонка.", "top_notes": "Яблуко, Імбир, Бергамот", "heart_notes": "Шавлія, Ягоди ялівцю, Герань", "base_notes": "Бурштинове дерево, Боби тонка, Кедр, Ветивер", "price_full_bottle": 5500, "price_per_ml": 75, "gender": "m", "occasion": "d", "vibe": "f"}, "ysl_tuxedo": {"brand_id": "ysl", "brand": "Yves Saint Laurent", "name": "Tuxedo", "description": "Ексклюзивна бутікова лінійка: димні пачулі, матове темне листя, коріандр, чорний перець та сіра амбра.", "top_notes": "Листя фіалки, Бергамот, Коріандр", "heart_notes": "Троянда, Чорний перець, Конвалія", "base_notes": "Пачулі, Сіра амбра, Бурбонська ваніль", "price_full_bottle": 10500, "price_per_ml": 135, "gender": "u", "occasion": "e", "vibe": "w"}, "ysl_babycat": {"brand_id": "ysl", "brand": "Yves Saint Laurent", "name": "Babycat", "description": "Рідкісний гурманський шедевр: бурбонська ваніль, замша, олібанум, елемі та чорний перець.", "top_notes": "Рожевий перець, Чорний перець, Елемі", "heart_notes": "Олібанум, Шафран", "base_notes": "Бурбонська ваніль, Замша, Кедр", "price_full_bottle": 11900, "price_per_ml": 150, "gender": "u", "occasion": "e", "vibe": "s"}, "ysl_mon_paris": {"brand_id": "ysl", "brand": "Yves Saint Laurent", "name": "Mon Paris", "description": "Закоханість у Парижі: стигла полуниця, малина, груша, калабрійський бергамот, півонія та дурман.", "top_notes": "Полуниця, Малина, Груша, Калабрійський бергамот", "heart_notes": "Дурман, Півонія, Апельсиновий цвіт, Жасмин", "base_notes": "Білий мускус, Пачулі, Кедр, Амброксан", "price_full_bottle": 5400, "price_per_ml": 75, "gender": "w", "occasion": "d", "vibe": "floral"}, "dior_sauvage": {"brand_id": "dior", "brand": "Dior", "name": "Sauvage", "description": "Шляхетний та зухвалий фужер: вибуховий калабрійський бергамот, сичуанський перець та амброксан.", "top_notes": "Калабрійський бергамот, Перець", "heart_notes": "Сичуанський перець, Лаванда, Рожевий перець, Ветивер", "base_notes": "Амброксан, Кедр, Лабданум", "price_full_bottle": 5200, "price_per_ml": 75, "gender": "m", "occasion": "d", "vibe": "f"}, "dior_sauvage_elixir": {"brand_id": "dior", "brand": "Dior", "name": "Sauvage Elixir", "description": "Надпотужна нічна концентрація: пряна кориця, мускатний горіх, кардамон, лаванда та лакриця.", "top_notes": "Мускатний горіх, Кориця, Кардамон, Грейпфрут", "heart_notes": "Лаванда", "base_notes": "Лакриця, Сандал, Амбра, Пачулі, Ветивер", "price_full_bottle": 7400, "price_per_ml": 110, "gender": "m", "occasion": "e", "vibe": "t"}, "dior_gris_dior": {"brand_id": "dior", "brand": "Dior", "name": "Gris Dior", "description": "Ексклюзивна лінійка Maison Christian Dior: елегантна троянда, дубовий мох, пачулі, бергамот і кедр.", "top_notes": "Бергамот, Грейпфрут", "heart_notes": "Троянда, Жасмин, Полуниця", "base_notes": "Пачулі, Дубовий мох, Сандал, Бурштин, Кедр", "price_full_bottle": 11500, "price_per_ml": 140, "gender": "u", "occasion": "d", "vibe": "floral"}, "dior_fahrenheit": {"brand_id": "dior", "brand": "Dior", "name": "Fahrenheit", "description": "Легендарна шкіряно-фіалкова класика: лист фіалки, мускатний горіх, кедр, глід та шкіряний бензин.", "top_notes": "Мускатний горіх, Лаванда, Кедр, Ромашка, Бергамот", "heart_notes": "Листя фіалки, Мускатний горіх, Кедр, Сандал", "base_notes": "Шкіра, Ветивер, Мускус, Бурштин, Пачулі", "price_full_bottle": 5300, "price_per_ml": 75, "gender": "m", "occasion": "d", "vibe": "w"}, "dior_miss_dior": {"brand_id": "dior", "brand": "Dior", "name": "Miss Dior", "description": "Романтичний букет кохання: грасська троянда, конвалія, ірис, півонія та ніжний рожевий перець.", "top_notes": "Ірис, Півонія, Конвалія", "heart_notes": "Троянда, Персик, Абрикос", "base_notes": "Ваніль, Мускус, Боби тонка, Бензоїн, Сандал", "price_full_bottle": 5400, "price_per_ml": 75, "gender": "w", "occasion": "d", "vibe": "floral"}, "dior_homme_intense": {"brand_id": "dior", "brand": "Dior", "name": "Homme Intense", "description": "Оксамитовий вечірній пудровий ірис, лаванда, тепла амбрета, вірджинський кедр та груша.", "top_notes": "Лаванда", "heart_notes": "Ірис, Амбрета, Груша", "base_notes": "Вірджинський кедр, Ветивер", "price_full_bottle": 5600, "price_per_ml": 80, "gender": "m", "occasion": "e", "vibe": "w"}, "chanel_bleu_de_chanel": {"brand_id": "chanel", "brand": "Chanel", "name": "Bleu de Chanel", "description": "Еталон чоловічої свободи: грейпфрут, м'ята, рожевий перець, ладан, ветивер та білий кедр.", "top_notes": "Грейпфрут, Лимон, М'ята, Рожевий перець", "heart_notes": "Імбир, Мускатний горіх, Жасмин, Ізо Е Супер", "base_notes": "Ладан, Ветивер, Кедр, Сандал, Пачулі", "price_full_bottle": 6400, "price_per_ml": 90, "gender": "m", "occasion": "d", "vibe": "w"}, "chanel_coco_mademoiselle": {"brand_id": "chanel", "brand": "Chanel", "name": "Coco Mademoiselle", "description": "Свіжий та чуттєвий східний шипр: іскристий апельсин, турецька троянда, жасмин і чисті пачулі.", "top_notes": "Апельсин, Мандарин, Бергамот, Апельсиновий цвіт", "heart_notes": "Турецька троянда, Жасмин, Мімоза, Іланг-іланг", "base_notes": "Пачулі, Білий мускус, Ваніль, Ветивер, Боби тонка", "price_full_bottle": 6600, "price_per_ml": 95, "gender": "w", "occasion": "d", "vibe": "floral"}, "chanel_chance_eau_tendre": {"brand_id": "chanel", "brand": "Chanel", "name": "Chance Eau Tendre", "description": "Ніжний та оптимістичний фруктово-квітковий акорд: айва, грейпфрут, гіацинт, жасмин та ірис.", "top_notes": "Айва, Грейпфрут", "heart_notes": "Гіацинт, Жасмин", "base_notes": "Мускус, Ірис, Вірджинський кедр, Бурштин", "price_full_bottle": 6500, "price_per_ml": 95, "gender": "w", "occasion": "s", "vibe": "floral"}, "chanel_allure_homme_sport": {"brand_id": "chanel", "brand": "Chanel", "name": "Allure Homme Sport", "description": "Свіжа енергія руху: морські ноти, апельсин, червоний мандарин, атласький кедр і білий мускус.", "top_notes": "Апельсин, Морські ноти, Альдегіди, Червоний мандарин", "heart_notes": "Перець, Неролі, Кедр", "base_notes": "Боби тонка, Ваніль, Білий мускус, Бурштин, Ветивер", "price_full_bottle": 6200, "price_per_ml": 90, "gender": "m", "occasion": "d", "vibe": "f"}, "chanel_sycomore": {"brand_id": "chanel", "brand": "Chanel", "name": "Sycomore (Les Exclusifs)", "description": "Один із найкращих ветиверів у світі: димний благородний ветивер, кипарис, ялівець, сандал і тютюн.", "top_notes": "Рожевий перець, Альдегіди", "heart_notes": "Ветивер, Ялівець, Кипарис", "base_notes": "Тютюн, Сандал, Фіалка", "price_full_bottle": 14900, "price_per_ml": 180, "gender": "u", "occasion": "e", "vibe": "w"}, "chanel_coromandel": {"brand_id": "chanel", "brand": "Chanel", "name": "Coromandel (Les Exclusifs)", "description": "Барокова розкіш китайського лаку: білий шоколад, пачулі, бензоїн, ладан, ірис і цитруси.", "top_notes": "Гіркий апельсин, Неролі, Цитруси", "heart_notes": "Пачулі, Корінь ірису, Троянда, Жасмин", "base_notes": "Білий шоколад, Бензоїн, Ладан, Ваніль, Деревні ноти", "price_full_bottle": 14900, "price_per_ml": 180, "gender": "u", "occasion": "e", "vibe": "s"}, "terenzi_kirke": {"brand_id": "tiziana_terenzi", "brand": "Tiziana Terenzi", "name": "Kirke", "description": "Екзотичний фруктовий нектар богині Цірцеї: маракуя, персик, малина, смородина та фірмовий мускус.", "top_notes": "Маракуя, Персик, Малина, Листя чорної смородини, Груша", "heart_notes": "Конвалія", "base_notes": "Геліотроп, Сандал, Ваніль, Пачулі, Мускус", "price_full_bottle": 6900, "price_per_ml": 95, "gender": "u", "occasion": "s", "vibe": "floral"}, "terenzi_andromeda": {"brand_id": "tiziana_terenzi", "brand": "Tiziana Terenzi", "name": "Andromeda", "description": "Зоряне сузір'я трав і квітів: іланг-іланг, водяний жасмин, бергамот, солодка груша, білий геліотроп.", "top_notes": "Бергамот, Трава, Іланг-іланг, Водяний жасмин", "heart_notes": "Лілія, Листя фіалки, Дамаська троянда, Груша", "base_notes": "Амбра, Ваніль, Кашемірове дерево, Ебенове дерево", "price_full_bottle": 6900, "price_per_ml": 95, "gender": "u", "occasion": "d", "vibe": "floral"}, "terenzi_cassiopea": {"brand_id": "tiziana_terenzi", "brand": "Tiziana Terenzi", "name": "Cassiopea", "description": "Літня ніч під зоряним небом: маракуя, чорна смородина, лимон, чайна троянда, гвоздика та боби тонка.", "top_notes": "Маракуя, Чорна смородина, Лимон, Папороть", "heart_notes": "Гвоздика, Конвалія, Чайна троянда", "base_notes": "Сандал, Боби тонка, Мускус", "price_full_bottle": 6900, "price_per_ml": 95, "gender": "u", "occasion": "s", "vibe": "floral"}, "terenzi_draco": {"brand_id": "tiziana_terenzi", "brand": "Tiziana Terenzi", "name": "Draco", "description": "М'який та шляхетний східний акорд: персик, лимон, бергамот, зелений кедр, пачулі, ваніль та груша.", "top_notes": "Бергамот, Лимон, Апельсин, Зелені ноти", "heart_notes": "Персик, Жасмин, Кедр, Пачулі, Магнолія", "base_notes": "Ваніль, Боби тонка, Мускус, Груша, Геліотроп", "price_full_bottle": 6900, "price_per_ml": 95, "gender": "u", "occasion": "d", "vibe": "s"}, "terenzi_spirito_fiorentino": {"brand_id": "tiziana_terenzi", "brand": "Tiziana Terenzi", "name": "Spirito Fiorentino", "description": "Червоний флорентійський місяць: шкіра, шафран, жасмин, сіра амбра, дубовий мох та береза.", "top_notes": "Шафран, Апельсин, Жасмин, Лілія", "heart_notes": "Сіра амбра, Іланг-іланг, Магнолія, Конвалія", "base_notes": "Шкіра, Береза, Дубовий мох, Сандал, Мускус", "price_full_bottle": 7400, "price_per_ml": 105, "gender": "u", "occasion": "e", "vibe": "w"}, "terenzi_ursa": {"brand_id": "tiziana_terenzi", "brand": "Tiziana Terenzi", "name": "Ursa", "description": "Глибокий аромат північного озера: сухофрукти, пачулі, ром, мускатний горіх, ладан, тютюн і шкіра.", "top_notes": "Сухофрукти, Мускатний горіх, Елемі, Ром", "heart_notes": "Пачулі, Олібанум, Ладан, Тютюн, Ветивер", "base_notes": "Шкіра, Уд, Ваніль", "price_full_bottle": 7400, "price_per_ml": 105, "gender": "u", "occasion": "e", "vibe": "t"}, "montale_intense_cafe": {"brand_id": "montale", "brand": "Montale", "name": "Intense Cafe", "description": "Затишна кав'ярня в центрі Парижа: свіжозварена арабіка, чайна троянда, тепла амбра та солодка ваніль.", "top_notes": "Квіткові ноти", "heart_notes": "Кава, Троянда", "base_notes": "Амбра, Білий мускус, Ваніль", "price_full_bottle": 4600, "price_per_ml": 65, "gender": "u", "occasion": "e", "vibe": "s"}, "montale_chocolate_greedy": {"brand_id": "montale", "brand": "Montale", "name": "Chocolate Greedy", "description": "Мрія ласуна: гарячий шоколад, свіже хрустке печиво, какао, сушена цедра гіркого апельсина та ваніль.", "top_notes": "Какао, Боби тонка, Ваніль", "heart_notes": "Гіркий апельсин", "base_notes": "Кава, Сухофрукти", "price_full_bottle": 4600, "price_per_ml": 65, "gender": "u", "occasion": "c", "vibe": "s"}, "montale_roses_musk": {"brand_id": "montale", "brand": "Montale", "name": "Roses Musk", "description": "Найвідоміший бестселер бренду: свіжа ранкова троянда, оксамитовий білий мускус, жасмин та амбра.", "top_notes": "Троянда", "heart_notes": "Жасмин", "base_notes": "Мускус, Амбра", "price_full_bottle": 4600, "price_per_ml": 65, "gender": "w", "occasion": "d", "vibe": "floral"}, "montale_arabians_tonka": {"brand_id": "montale", "brand": "Montale", "name": "Arabians Tonka", "description": "Дикий та пристрасний східний скакун: боби тонка, шафран, уд, бергамот, троянда, цукрова тростина.", "top_notes": "Шафран, Бергамот", "heart_notes": "Удове дерево, Болгарська троянда", "base_notes": "Цукрова тростина, Боби тонка, Бурштин, Білий мускус", "price_full_bottle": 4900, "price_per_ml": 70, "gender": "u", "occasion": "e", "vibe": "s"}, "montale_starry_nights": {"brand_id": "montale", "brand": "Montale", "name": "Starry Nights", "description": "Зоряне небо східної пустелі: калабрійський бергамот, яблуко, троянда, жасмин, пачулі та пудровий мускус.", "top_notes": "Яблуко, Бергамот, Лимон", "heart_notes": "Троянда, Пачулі, Жасмин", "base_notes": "Білий мускус, Бурштин, Пудрові ноти", "price_full_bottle": 4600, "price_per_ml": 65, "gender": "u", "occasion": "e", "vibe": "floral"}, "montale_vanilla_cake": {"brand_id": "montale", "brand": "Montale", "name": "Vanilla Cake", "description": "Апетитний вершковий десерт: мадагаскарська ваніль, тепле молоко, смажений мигдаль, карамель та безе.", "top_notes": "Молоко, Мигдаль", "heart_notes": "Карамель, Безе", "base_notes": "Мадагаскарська ваніль", "price_full_bottle": 4600, "price_per_ml": 65, "gender": "w", "occasion": "c", "vibe": "s"}, "mancera_red_tobacco": {"brand_id": "mancera", "brand": "Mancera", "name": "Red Tobacco", "description": "Неймовірно стійкий, гарячий тютюново-пряний еліксир із нотами шафрану, кориці та пахучого уду.", "top_notes": "Шафран, Кориця, Ладан, Мускатний горіх, Білий персик", "heart_notes": "Пачулі, Жасмин", "base_notes": "Тютюн, Амбра, Деревні ноти, Ветивер, Стручки ванілі", "price_full_bottle": 5300, "price_per_ml": 75, "gender": "u", "occasion": "e", "vibe": "t"}, "mancera_cedrat_boise": {"brand_id": "mancera", "brand": "Mancera", "name": "Cedrat Boise", "description": "Свіжий цитрусово-деревний хіт: сицилійський лимон, чорна смородина, прянощі, шкіра, білий кедр і сандал.", "top_notes": "Сицилійський лимон, Чорна смородина, Бергамот, Прянощі", "heart_notes": "Фруктові ноти, Листя пачулі, Водяний жасмин", "base_notes": "Кедр, Шкіра, Сандал, Ваніль, Білий мускус", "price_full_bottle": 5100, "price_per_ml": 70, "gender": "u", "occasion": "d", "vibe": "w"}, "mancera_instant_crush": {"brand_id": "mancera", "brand": "Mancera", "name": "Instant Crush", "description": "Миттєве кохання: імбир, шафран, бергамот, марокканська троянда, жасмин, теплий бурштин і дубовий мох.", "top_notes": "Шафран, Імбир, Сицилійський бергамот, Мандарин", "heart_notes": "Марокканська троянда, Єгипетський жасмин, Бурштинове дерево", "base_notes": "Мадагаскарська ваніль, Сандал, Білий мускус, Мох", "price_full_bottle": 5200, "price_per_ml": 75, "gender": "u", "occasion": "e", "vibe": "s"}, "mancera_roses_vanille": {"brand_id": "mancera", "brand": "Mancera", "name": "Roses Vanille", "description": "Солодка чайна троянда в цукровій пудрі: свіжий калабрійський лимон, водна троянда, білий мускус і ваніль.", "top_notes": "Калабрійський лимон", "heart_notes": "Троянда, Цукор", "base_notes": "Ваніль, Білий мускус, Кедр", "price_full_bottle": 5100, "price_per_ml": 70, "gender": "w", "occasion": "e", "vibe": "s"}, "mancera_amore_caffe": {"brand_id": "mancera", "brand": "Mancera", "name": "Amore Caffe", "description": "Італійський десерт афогато: чорна кава, амаретто, морозиво, коричневий цукор, ваніль та сіра амбра.", "top_notes": "Кава, Лікер Амаретто", "heart_notes": "Морозиво, Ваніль", "base_notes": "Коричневий цукор, Ваніль, Сіра амбра", "price_full_bottle": 5400, "price_per_ml": 75, "gender": "u", "occasion": "c", "vibe": "s"}, "mancera_holidays": {"brand_id": "mancera", "brand": "Mancera", "name": "Holidays", "description": "Атмосфера тропічної відпустки: солодкий кокос, бергамот, квітка тіаре, іланг-іланг, морські ноти та ваніль.", "top_notes": "Кокос, Бергамот", "heart_notes": "Квітка тіаре, Іланг-іланг, Морські ноти", "base_notes": "Стручки ванілі, Сандал, Білий мускус", "price_full_bottle": 5100, "price_per_ml": 70, "gender": "w", "occasion": "s", "vibe": "floral"}, "ex_nihilo_fleur_narcotique": {"brand_id": "ex_nihilo", "brand": "Ex Nihilo", "name": "Fleur Narcotique", "description": "Наркотично привабливий квітковий шлейф: соковитий лічі, бергамот, стиглий персик, півонія та жасмин.", "top_notes": "Бергамот, Лічі, Персик", "heart_notes": "Жасмин, Півонія, Апельсиновий цвіт", "base_notes": "Деревні ноти, Мох, Мускус", "price_full_bottle": 12800, "price_per_ml": 150, "gender": "u", "occasion": "d", "vibe": "floral"}, "ex_nihilo_lust_in_paradise": {"brand_id": "ex_nihilo", "brand": "Ex Nihilo", "name": "Lust in Paradise", "description": "Французька Рив'єра: біла півонія, рожевий перець, лічі, кедр, мускус і теплий сонячний бурштин.", "top_notes": "Рожевий перець", "heart_notes": "Біла півонія, Лічі", "base_notes": "Екстракт білого кедра, Мускус, Бурштин", "price_full_bottle": 12500, "price_per_ml": 150, "gender": "w", "occasion": "s", "vibe": "floral"}, "ex_nihilo_blue_talisman": {"brand_id": "ex_nihilo", "brand": "Ex Nihilo", "name": "Blue Talisman", "description": "Ювілейний талісман удачі: соковита груша, бергамот, мандарин, апельсиновий цвіт, амброфікс і мускус.", "top_notes": "Бергамот, Імбир, Мандарин, Груша", "heart_notes": "Апельсиновий цвіт, Джордживуд", "base_notes": "Акігалавуд, Амброфікс, Мускус", "price_full_bottle": 13500, "price_per_ml": 160, "gender": "u", "occasion": "d", "vibe": "f"}, "ex_nihilo_the_hedonist": {"brand_id": "ex_nihilo", "brand": "Ex Nihilo", "name": "The Hedonist", "description": "Філософія чистого задоволення: бергамот, імбир, кедр, акігалавуд, ветивер і боби тонка.", "top_notes": "Бергамот, Імбир", "heart_notes": "Кедр, Акігалавуд", "base_notes": "Ветивер, Мускус, Боби тонка", "price_full_bottle": 12500, "price_per_ml": 150, "gender": "u", "occasion": "d", "vibe": "w"}, "ex_nihilo_devil_tender": {"brand_id": "ex_nihilo", "brand": "Ex Nihilo", "name": "Devil Tender", "description": "Диявольська ніжність: рожевий грейпфрут, рожевий перець, персик, болгарська троянда, півонія та замша.", "top_notes": "Рожевий грейпфрут, Рожевий перець, Персик", "heart_notes": "Троянда, Півонія", "base_notes": "Замша, Білий кедр, Сандал", "price_full_bottle": 12500, "price_per_ml": 150, "gender": "w", "occasion": "d", "vibe": "floral"}, "ex_nihilo_atlas_fever": {"brand_id": "ex_nihilo", "brand": "Ex Nihilo", "name": "Atlas Fever", "description": "Пряна східна подорож: червоні ягоди, ладан, сандал, боби тонка, ваніль та благородний дуб.", "top_notes": "Червоні ягоди, Ладан", "heart_notes": "Нарцис", "base_notes": "Сандал, Боби тонка, Ваніль, Дуб, Кедр", "price_full_bottle": 13200, "price_per_ml": 155, "gender": "u", "occasion": "e", "vibe": "t"}, "zarko_pink_molecule": {"brand_id": "zarkoperfume", "brand": "Zarkoperfume", "name": "Pink Molécule 090.09", "description": "Скандинавська естетика: рожеве ігристе шампанське, чорна бузина, стиглий абрикос та вершкова молекула.", "top_notes": "Бузина, Абрикос, Чорна орхідея, Шампанське", "heart_notes": "Молекулярний акорд (без середніх нот)", "base_notes": "Махагоні, Вершки, Чорне дерево", "price_full_bottle": 4900, "price_per_ml": 70, "gender": "w", "occasion": "s", "vibe": "floral"}, "zarko_molecule_234_38": {"brand_id": "zarkoperfume", "brand": "Zarkoperfume", "name": "Molecule 234.38", "description": "Персональна аура, що адаптується до вашої шкіри: чиста молекулярна магія тепла та деревної свіжості.", "top_notes": "Молекулярний ізомер 234.38", "heart_notes": "Аура шкіри", "base_notes": "Деревні молекули", "price_full_bottle": 4900, "price_per_ml": 70, "gender": "u", "occasion": "d", "vibe": "w"}, "zarko_the_muse": {"brand_id": "zarkoperfume", "brand": "Zarkoperfume", "name": "The Muse", "description": "Ідеальна білосніжна чистота: аромат білого свіжого бавовняного полотна, пудрового мускусу та квітки уду.", "top_notes": "Білий бавовник", "heart_notes": "Білий мускус", "base_notes": "Квітка уду", "price_full_bottle": 4900, "price_per_ml": 70, "gender": "w", "occasion": "d", "vibe": "f"}, "zarko_purple_molecule": {"brand_id": "zarkoperfume", "brand": "Zarkoperfume", "name": "Purple Molecule 070.07", "description": "Соковита пітайя (драконячий фрукт), мадагаскарська ваніль, біла амбра та вершковий мускус.", "top_notes": "Пітайя (драконячий фрукт)", "heart_notes": "Амбра", "base_notes": "Ваніль, Сандал", "price_full_bottle": 4900, "price_per_ml": 70, "gender": "w", "occasion": "s", "vibe": "floral"}, "zarko_quantum_molecule": {"brand_id": "zarkoperfume", "brand": "Zarkoperfume", "name": "Quantum Molecule", "description": "Квантовий вибух свіжості: бергамот, мандарин, пачулі, біле дерево та світла амбра.", "top_notes": "Бергамот, Мандарин, Чорна смородина", "heart_notes": "Жасмин, Пачулі", "base_notes": "Біле дерево, Ваніль, Шоколад", "price_full_bottle": 4900, "price_per_ml": 70, "gender": "u", "occasion": "d", "vibe": "f"}, "zarko_inception": {"brand_id": "zarkoperfume", "brand": "Zarkoperfume", "name": "Inception", "description": "Аромат, натхненний фільмом Нолана «Початок»: шість паралельних шарів свіжих цитрусів, спецій та океану.", "top_notes": "Цитруси, Морські ноти", "heart_notes": "Квіткові ноти, Спеції", "base_notes": "Деревні ноти, Зелені ноти", "price_full_bottle": 4900, "price_per_ml": 70, "gender": "m", "occasion": "d", "vibe": "f"}};
+
+    const ATOMIZER_FEE = 40;
+    const DEFAULT_IMG = "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?q=80&w=800&auto=format&fit=crop";
+
+    // Application State
+    let currentCatalogVolume = 5; // 3, 5, 10, 15, or 0 (full bottle)
+    let selectedBrandFilter = 'all';
+    let selectedVibeFilter = 'all';
+    let searchQuery = '';
+
+    // Cart
+    let cart = JSON.parse(localStorage.getItem('parfume_cart') || '[]');
+
+    // Aroma Box Builder: array of up to 3 perfume IDs
+    let aromaBoxItems = [];
+
+    // Sommelier State
+    let quizAnswers = { gender: null, occasion: null, vibe: null };
+
+    // Modal Active Perfume
+    let activeModalPerfumeId = null;
+    let modalSelectedVolume = 5;
+
+    // Telegram WebApp Setup
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      try {
+        tg.enableClosingConfirmation();
+      } catch (e) {}
+    }
+
+    function haptic(type = 'light') {
+      try {
+        if (tg && tg.HapticFeedback) {
+          if (type === 'selection') tg.HapticFeedback.selectionChanged();
+          else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
+          else tg.HapticFeedback.impactOccurred(type);
+        }
+      } catch (e) {}
+    }
+
+    function showToast(message, icon = '✨') {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').innerText = message;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.style.display = 'flex';
+      haptic('selection');
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2400);
+    }
+
+    // Calculate Price Helper
+    function calculatePrice(perfume, volume) {
+      if (volume === 0) {
+        return perfume.price_full_bottle;
+      }
+      return (perfume.price_per_ml * volume) + ATOMIZER_FEE;
+    }
+
+    // Tab Navigation
+    function switchTab(tab) {
+      haptic('selection');
+      const tabs = ['catalog', 'aroma_box', 'sommelier', 'cart'];
+      tabs.forEach(t => {
+        const view = document.getElementById(t === 'catalog' ? 'catalogView' : 
+                                              t === 'aroma_box' ? 'aromaBoxView' : 
+                                              t === 'sommelier' ? 'sommelierView' : 'cartView');
+        if (view) view.style.display = (t === tab) ? 'block' : 'none';
+      });
+
+      document.getElementById('tabBtnCatalog').classList.toggle('active', tab === 'catalog');
+      document.getElementById('tabBtnAroma').classList.toggle('active', tab === 'aroma_box');
+      document.getElementById('tabBtnSommelier').classList.toggle('active', tab === 'sommelier');
+      document.getElementById('tabBtnCart').classList.toggle('active', tab === 'cart');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (tab === 'cart') renderCartView();
+      if (tab === 'aroma_box') renderAromaBoxView();
+    }
+
+    function openCartView() {
+      switchTab('cart');
+    }
+
+    // ================= CATALOG LOGIC =================
+    function initBrandsFilter() {
+      const container = document.getElementById('brandsFilterScroll');
+      let html = '<div class="filter-pill active" onclick="filterByBrand(\'all\')" id="brandPillAll">Всі бренди (15)</div>';
+      for (const [key, name] of Object.entries(BRANDS_DB)) {
+        html += `<div class="filter-pill" onclick="filterByBrand('${key}')" id="brandPill_${key}">${name}</div>`;
+      }
+      container.innerHTML = html;
+    }
+
+    function filterByBrand(bId) {
+      haptic('selection');
+      selectedBrandFilter = bId;
+      document.querySelectorAll('#brandsFilterScroll .filter-pill').forEach(el => el.classList.remove('active'));
+      const activeEl = bId === 'all' ? document.getElementById('brandPillAll') : document.getElementById(`brandPill_${bId}`);
+      if (activeEl) activeEl.classList.add('active');
+      renderCatalogGrid();
+    }
+
+    function filterByVibe(vId) {
+      haptic('selection');
+      selectedVibeFilter = vId;
+      document.querySelectorAll('#vibesFilterScroll .filter-pill').forEach(el => el.classList.remove('active'));
+      event.target.classList.add('active');
+      renderCatalogGrid();
+    }
+
+    function setCatalogVolume(vol) {
+      haptic('selection');
+      currentCatalogVolume = vol;
+      [3, 5, 10, 15, 0].forEach(v => {
+        const chip = document.getElementById(`volChip${v}`);
+        if (chip) chip.classList.toggle('active', v === vol);
+      });
+
+      const label = document.getElementById('currentModeLabel');
+      label.innerText = vol === 0 ? 'Повний флакон (100 мл)' : `Розпив (${vol} мл)`;
+      renderCatalogGrid();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val.trim().toLowerCase();
+      renderCatalogGrid();
+    }
+
+    function renderCatalogGrid() {
+      const grid = document.getElementById('perfumesGrid');
+      const countEl = document.getElementById('perfumesCount');
+      
+      const filtered = Object.entries(PERFUMES_DB).filter(([id, p]) => {
+        if (selectedBrandFilter !== 'all' && p.brand_id !== selectedBrandFilter) return false;
+        if (selectedVibeFilter !== 'all' && p.vibe !== selectedVibeFilter) return false;
+        if (searchQuery) {
+          const text = `${p.brand} ${p.name} ${p.description} ${p.top_notes} ${p.heart_notes} ${p.base_notes}`.toLowerCase();
+          if (!text.includes(searchQuery)) return false;
+        }
+        return true;
+      });
+
+      countEl.innerText = `Знайдено: ${filtered.length} парфумів`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px 10px; color: var(--text-muted);">
+            <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
+            <div style="font-size: 15px; color: #fff;">Нічого не знайдено</div>
+            <div style="font-size: 12px; margin-top: 4px;">Спробуйте інший пошуковий запит або скиньте фільтри</div>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      filtered.forEach(([id, p]) => {
+        const price = calculatePrice(p, currentCatalogVolume);
+        const formatLabel = currentCatalogVolume === 0 ? 'Флакон' : `${currentCatalogVolume} мл`;
+        const vibeNames = { 'f': '🌿 Свіжий', 't': '🍂 Тютюновий', 's': '🍨 Гурманський', 'w': '🪵 Деревний', 'floral': '🌸 Квітковий' };
+        const vibeText = vibeNames[p.vibe] || '✨ Ніша';
+
+        html += `
+          <div class="perfume-card" onclick="openPerfumeModal('${id}')">
+            <div class="card-img-wrap">
+              <img class="card-img" src="${p.image_url || DEFAULT_IMG}" alt="${p.name}" loading="lazy" onerror="this.src='${DEFAULT_IMG}'">
+              <div class="card-badge-vibe">${vibeText}</div>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="card-brand">${p.brand}</div>
+                <div class="card-name">${p.name}</div>
+                <div class="card-notes">${p.top_notes} • ${p.heart_notes}</div>
+              </div>
+              <div class="card-footer">
+                <div>
+                  <div class="card-price">${price} ₴</div>
+                  <div style="font-size: 10px; color: var(--text-muted);">${formatLabel}</div>
+                </div>
+                <button class="card-add-btn" onclick="event.stopPropagation(); quickAddToCart('${id}', ${currentCatalogVolume})">
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      grid.innerHTML = html;
+    }
+
+    // ================= MODAL PERFUME DETAILS =================
+    function openPerfumeModal(id) {
+      haptic('light');
+      const p = PERFUMES_DB[id];
+      if (!p) return;
+
+      activeModalPerfumeId = id;
+      modalSelectedVolume = currentCatalogVolume;
+
+      document.getElementById('modalPerfumeImg').src = p.image_url || DEFAULT_IMG;
+      document.getElementById('modalBrand').innerText = p.brand.toUpperCase();
+      document.getElementById('modalName').innerText = p.name;
+      document.getElementById('modalDesc').innerText = p.description;
+
+      const gLabels = { 'm': 'Чоловічий', 'w': 'Жіночий', 'u': 'Унісекс' };
+      document.getElementById('modalGenderBadge').innerText = gLabels[p.gender] || 'Унісекс';
+
+      document.getElementById('modalTopNotes').innerText = p.top_notes;
+      document.getElementById('modalHeartNotes').innerText = p.heart_notes;
+      document.getElementById('modalBaseNotes').innerText = p.base_notes;
+
+      setModalVolume(modalSelectedVolume);
+
+      document.getElementById('perfumeModalBackdrop').classList.add('open');
+    }
+
+    function closePerfumeModal(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('perfumeModalBackdrop').classList.remove('open');
+    }
+
+    function setModalVolume(vol) {
+      haptic('selection');
+      modalSelectedVolume = vol;
+      [3, 5, 10, 15, 0].forEach(v => {
+        const el = document.getElementById(`mVol${v}`);
+        if (el) el.classList.toggle('active', v === vol);
+      });
+
+      if (activeModalPerfumeId) {
+        const p = PERFUMES_DB[activeModalPerfumeId];
+        const pr = calculatePrice(p, vol);
+        document.getElementById('modalPriceTag').innerText = `${pr} ₴`;
+      }
+    }
+
+    function addModalPerfumeToCart() {
+      if (!activeModalPerfumeId) return;
+      quickAddToCart(activeModalPerfumeId, modalSelectedVolume);
+      closePerfumeModal();
+    }
+
+    // ================= CART LOGIC =================
+    function quickAddToCart(id, volume) {
+      const p = PERFUMES_DB[id];
+      if (!p) return;
+
+      const price = calculatePrice(p, volume);
+      const typeLabel = volume === 0 ? 'Повний флакон (100 мл)' : `Розпив ${volume} мл`;
+
+      cart.push({
+        id: id,
+        brand: p.brand,
+        name: p.name,
+        price: price,
+        volume: volume,
+        typeLabel: typeLabel,
+        isBundle: false
+      });
+
+      saveCart();
+      showToast(`${p.name} додано у кошик!`, '🛒');
+      haptic('success');
+    }
+
+    function saveCart() {
+      localStorage.setItem('parfume_cart', JSON.stringify(cart));
+      updateCartHeader();
+    }
+
+    function updateCartHeader() {
+      const total = cart.reduce((sum, it) => sum + it.price, 0);
+      document.getElementById('headerCartCount').innerText = cart.length;
+      document.getElementById('headerCartTotal').innerText = `${total} ₴`;
+    }
+
+    function renderCartView() {
+      const list = document.getElementById('cartItemsList');
+      const emptyMsg = document.getElementById('cartEmptyMessage');
+      const checkoutSec = document.getElementById('cartCheckoutSection');
+
+      if (cart.length === 0) {
+        list.innerHTML = '';
+        emptyMsg.style.display = 'block';
+        checkoutSec.style.display = 'none';
+        return;
+      }
+
+      emptyMsg.style.display = 'none';
+      checkoutSec.style.display = 'block';
+
+      let html = '';
+      let subtotal = 0;
+
+      cart.forEach((it, idx) => {
+        subtotal += it.price;
+        html += `
+          <div class="cart-item-row">
+            <div class="cart-item-info">
+              <div class="cart-item-title">${it.brand} — ${it.name}</div>
+              <div class="cart-item-subtitle">${it.typeLabel}</div>
+            </div>
+            <div class="cart-item-price">${it.price} ₴</div>
+            <span class="cart-remove-icon" onclick="removeCartItem(${idx})">✕</span>
+          </div>
+        `;
+      });
+
+      list.innerHTML = html;
+      document.getElementById('cartSubtotal').innerText = `${subtotal} ₴`;
+      document.getElementById('cartGrandTotal').innerText = `${subtotal} ₴`;
+    }
+
+    function removeCartItem(idx) {
+      haptic('light');
+      cart.splice(idx, 1);
+      saveCart();
+      renderCartView();
+    }
+
+    function submitOrder() {
+      const name = document.getElementById('orderName').value.trim();
+      const phone = document.getElementById('orderPhone').value.trim();
+      const address = document.getElementById('orderAddress').value.trim();
+      const payment = document.getElementById('orderPayment').value;
+
+      if (!name || name.length < 3) {
+        alert("Будь ласка, введіть коректне ім'я та прізвище.");
+        return;
+      }
+      if (!phone || phone.length < 9) {
+        alert("Будь ласка, введіть дійсний номер телефону.");
+        return;
+      }
+      if (!address || address.length < 5) {
+        alert("Будь ласка, вкажіть місто та відділення Нової Пошти.");
+        return;
+      }
+
+      const total = cart.reduce((sum, it) => sum + it.price, 0);
+      const orderId = '#RO-' + Math.floor(100000 + Math.random() * 900000);
+      const payLabel = payment === 'card' ? 'Оплата на картку / Monobank' : 'Накладений платіж';
+
+      const orderData = {
+        order_id: orderId,
+        customer_name: name,
+        customer_phone: phone,
+        customer_address: address,
+        payment_method: payLabel,
+        total_amount: total,
+        items: cart
+      };
+
+      haptic('success');
+
+      // Send to Telegram WebApp if available
+      if (tg && tg.sendData) {
+        try {
+          tg.sendData(JSON.stringify(orderData));
+        } catch (e) {
+          console.warn("Telegram WebApp sendData failed:", e);
+        }
+      }
+
+      // Display Success Modal
+      document.getElementById('successReceiptDetails').innerHTML = `
+        <div style="font-size: 13px; color: var(--gold-light); font-weight: 700; margin-bottom: 6px;">Номер замовлення: ${orderId}</div>
+        <div style="font-size: 12px; color: #fff;">Одержувач: <b>${name}</b></div>
+        <div style="font-size: 12px; color: #fff;">Телефон: <b>${phone}</b></div>
+        <div style="font-size: 12px; color: #fff;">Доставка: <b>${address}</b></div>
+        <div style="font-size: 12px; color: #fff;">Оплата: <b>${payLabel}</b></div>
+        <div style="font-size: 14px; color: var(--gold-light); font-weight: 700; margin-top: 8px;">Сума: ${total} ₴</div>
+      `;
+
+      cart = [];
+      saveCart();
+      document.getElementById('successModalBackdrop').classList.add('open');
+    }
+
+    function closeSuccessModal() {
+      document.getElementById('successModalBackdrop').classList.remove('open');
+      switchTab('catalog');
+    }
+
+    // ================= AROMA BOX BUILDER =================
+    function renderAromaBoxView() {
+      for (let i = 0; i < 3; i++) {
+        const slotEl = document.getElementById(`slot${i}`);
+        const pid = aromaBoxItems[i];
+        if (pid && PERFUMES_DB[pid]) {
+          const p = PERFUMES_DB[pid];
+          slotEl.classList.add('filled');
+          slotEl.innerHTML = `
+            <button class="slot-remove-btn" onclick="event.stopPropagation(); removeAromaSlot(${i})">✕</button>
+            <div style="font-size: 10px; color: var(--gold-light);">${p.brand}</div>
+            <div class="slot-filled-name">${p.name}</div>
+            <div style="font-size: 10px; color: var(--text-gold); margin-top: 4px;">✓ 5 мл</div>
+          `;
+        } else {
+          slotEl.classList.remove('filled');
+          slotEl.innerHTML = `
+            <div class="slot-num">№ ${i + 1}</div>
+            <div class="slot-icon">🧴</div>
+            <div class="slot-placeholder-text">+ Обрати аромат</div>
+          `;
+        }
+      }
+
+      const statusEl = document.getElementById('aromaSlotsStatus');
+      const rawEl = document.getElementById('aromaRawSum');
+      const finalEl = document.getElementById('aromaFinalSum');
+      const btn = document.getElementById('btnOrderAromaBox');
+
+      statusEl.innerText = `${aromaBoxItems.length} з 3 ароматів`;
+
+      const rawSum = aromaBoxItems.reduce((acc, pid) => {
+        return acc + calculatePrice(PERFUMES_DB[pid], 5);
+      }, 0);
+
+      const discountSum = Math.round(rawSum * 0.85);
+
+      rawEl.innerText = `Звичайна ціна: ${rawSum} ₴`;
+      finalEl.innerText = `${discountSum} ₴`;
+
+      btn.disabled = aromaBoxItems.length !== 3;
+
+      renderAromaQuickPickGrid();
+    }
+
+    function handleSlotClick(slotIdx) {
+      haptic('light');
+      window.scrollTo({ top: 380, behavior: 'smooth' });
+    }
+
+    function addPerfumeToAromaBox(pid) {
+      if (aromaBoxItems.length >= 3) {
+        showToast("Сет уже заповнено (3 аромати). Видаліть один, щоб змінити.", "⚠️");
+        return;
+      }
+      if (aromaBoxItems.includes(pid)) {
+        showToast("Цей аромат уже є у вашому сеті!", "ℹ️");
+        return;
+      }
+      haptic('selection');
+      aromaBoxItems.push(pid);
+      renderAromaBoxView();
+      showToast(`${PERFUMES_DB[pid].name} додано у сет!`, "🎁");
+    }
+
+    function removeAromaSlot(slotIdx) {
+      haptic('light');
+      aromaBoxItems.splice(slotIdx, 1);
+      renderAromaBoxView();
+    }
+
+    function addAromaBoxToCart() {
+      if (aromaBoxItems.length !== 3) return;
+
+      const rawSum = aromaBoxItems.reduce((acc, pid) => {
+        return acc + calculatePrice(PERFUMES_DB[pid], 5);
+      }, 0);
+      const discountSum = Math.round(rawSum * 0.85);
+
+      const names = aromaBoxItems.map(pid => PERFUMES_DB[pid].name).join(', ');
+
+      cart.push({
+        id: 'aroma_box_bundle',
+        brand: 'Ексклюзивний Сет',
+        name: `Aroma Box (${names})`,
+        price: discountSum,
+        volume: 5,
+        typeLabel: '3 аромати по 5 мл зі знижкою 15%',
+        isBundle: true
+      });
+
+      aromaBoxItems = [];
+      saveCart();
+      haptic('success');
+      showToast("Aroma Box успішно додано до кошика!", "🎉");
+      switchTab('cart');
+    }
+
+    function renderAromaQuickPickGrid() {
+      const grid = document.getElementById('aromaQuickPickGrid');
+      let html = '';
+      Object.entries(PERFUMES_DB).slice(0, 18).forEach(([pid, p]) => {
+        const isPicked = aromaBoxItems.includes(pid);
+        html += `
+          <div class="perfume-card" style="opacity: ${isPicked ? 0.45 : 1};" onclick="addPerfumeToAromaBox('${pid}')">
+            <div class="card-img-wrap" style="padding-top: 80%;">
+              <img class="card-img" src="${p.image_url || DEFAULT_IMG}" alt="${p.name}">
+            </div>
+            <div class="card-body" style="padding: 10px;">
+              <div class="card-brand">${p.brand}</div>
+              <div class="card-name">${p.name}</div>
+              <button class="luxury-gold-btn" style="padding: 6px; font-size: 11px; margin-top: 6px;">
+                ${isPicked ? '✓ У сеті' : '+ Додати у бокс'}
+              </button>
+            </div>
+          </div>
+        `;
+      });
+      grid.innerHTML = html;
+    }
+
+    // ================= SOMMELIER LOGIC =================
+    function selectQuizOption(type, value) {
+      haptic('selection');
+      quizAnswers[type] = value;
+
+      if (type === 'gender') {
+        document.getElementById('quizStep1').style.display = 'none';
+        document.getElementById('quizStep2').style.display = 'block';
+      } else if (type === 'occasion') {
+        document.getElementById('quizStep2').style.display = 'none';
+        document.getElementById('quizStep3').style.display = 'block';
+      } else if (type === 'vibe') {
+        document.getElementById('quizStep3').style.display = 'none';
+        calculateQuizResults();
+      }
+    }
+
+    function calculateQuizResults() {
+      haptic('success');
+      document.getElementById('quizResultStep').style.display = 'block';
+      const grid = document.getElementById('quizResultsGrid');
+
+      const g = quizAnswers.gender;
+      const o = quizAnswers.occasion;
+      const v = quizAnswers.vibe;
+
+      const scored = Object.entries(PERFUMES_DB).map(([pid, p]) => {
+        let score = 0;
+        if (p.gender === g || p.gender === 'u') score += 3;
+        if (p.occasion === o) score += 3;
+        if (p.vibe === v) score += 4;
+        return { pid, p, score };
+      });
+
+      scored.sort((a, b) => b.score - a.score);
+      const topPicks = scored.slice(0, 4);
+
+      let html = '';
+      topPicks.forEach(({ pid, p }) => {
+        const price = calculatePrice(p, 5);
+        html += `
+          <div class="perfume-card" onclick="openPerfumeModal('${pid}')">
+            <div class="card-img-wrap">
+              <img class="card-img" src="${p.image_url || DEFAULT_IMG}" alt="${p.name}">
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="card-brand">${p.brand}</div>
+                <div class="card-name">${p.name}</div>
+                <div style="font-size: 11px; color: var(--gold-light); margin-bottom: 6px;">Ідеальне влучання 98%</div>
+                <div class="card-notes">${p.top_notes}</div>
+              </div>
+              <div class="card-footer">
+                <div>
+                  <div class="card-price">${price} ₴</div>
+                  <div style="font-size: 10px; color: var(--text-muted);">5 мл розпив</div>
+                </div>
+                <button class="card-add-btn" onclick="event.stopPropagation(); quickAddToCart('${pid}', 5)">
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      grid.innerHTML = html;
+    }
+
+    function restartQuiz() {
+      haptic('light');
+      quizAnswers = { gender: null, occasion: null, vibe: null };
+      document.getElementById('quizStep1').style.display = 'block';
+      document.getElementById('quizStep2').style.display = 'none';
+      document.getElementById('quizStep3').style.display = 'none';
+      document.getElementById('quizResultStep').style.display = 'none';
+    }
+
+    // Initial Bootstrap
+    document.addEventListener('DOMContentLoaded', () => {
+      initBrandsFilter();
+      renderCatalogGrid();
+      updateCartHeader();
+    });
+  </script>
+</body>
+</html>
