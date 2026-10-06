@@ -352,23 +352,26 @@ html_template = '''<!DOCTYPE html>
     .card-img-wrap {
       position: relative;
       width: 100%;
-      padding-top: 100%;
-      background: #020c08;
+      padding-top: 105%;
+      background: radial-gradient(circle at 50% 50%, #0d3829 0%, #03140e 75%, #020b08 100%);
       overflow: hidden;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.18);
     }
 
     .card-img {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 86%;
+      height: 86%;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .perfume-card:hover .card-img {
-      transform: scale(1.06);
+      transform: translate(-50%, -50%) scale(1.08);
     }
 
     .card-badge-vibe {
@@ -1196,8 +1199,8 @@ html_template = '''<!DOCTYPE html>
     <div class="modal-sheet" id="perfumeModalSheet" onclick="event.stopPropagation()">
       <div class="modal-close-bar"></div>
 
-      <div style="position: relative; width: 100%; height: 260px; border-radius: 16px; overflow: hidden; margin-bottom: 14px; background: #020c08;">
-        <img id="modalPerfumeImg" src="" alt="Perfume" style="width: 100%; height: 100%; object-fit: cover;">
+      <div style="position: relative; width: 100%; height: 280px; border-radius: 18px; overflow: hidden; margin-bottom: 14px; background: radial-gradient(circle at 50% 50%, #0d3829 0%, #03140e 80%); border: 1px solid var(--border-gold); display: flex; align-items: center; justify-content: center;">
+        <img id="modalPerfumeImg" src="" alt="Perfume" style="width: 88%; height: 88%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));">
         <div id="modalGenderBadge" class="card-badge-vibe">Унісекс</div>
       </div>
 
